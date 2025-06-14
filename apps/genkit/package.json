@@ -1,0 +1,19 @@
+{
+  "name": "genkit",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nodemon src/index.ts",
+    "build": "esbuild src/index.ts --platform=node --bundle --outdir=dist",
+    "start": "pnpm run build && node dist/index.js",
+    "clean": "rm -rf dist"
+  },
+  "license": "ISC",
+  "author": {
+    "name": "Mayank Tiwari",
+    "email": "devmayanktiwari@gmail.com"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}

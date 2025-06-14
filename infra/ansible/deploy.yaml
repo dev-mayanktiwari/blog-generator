@@ -1,0 +1,30 @@
+- name: Deploy App
+  hosts: web
+  become: true
+
+  tasks:
+    - name: Check if Docker is installed
+      command: docker --version
+      register: docker_check
+      ignore_errors: true
+
+    - name: Ensure Docker is installed (only if not already installed)
+      apt:
+        name: docker.io
+        state: present
+        update_cache: true
+      when: docker_check.rc != 0
+
+    - name: Pull latest image from Docker Hub
+      shell: docker pull {{ docker_username }}/labelnet:latest
+
+    - name: Stop and remove existing container
+      shell: |
+        docker stop labelnet || true
+        docker rm labelnet || true
+
+    - name: Run new container
+      shell:
+       docker run -d --name labelnet -p {{ host_port }}:{{ container_port }} --env-file .env {{ docker_username }}/labelnet:latest
+      args:
+        chdir: labelnet

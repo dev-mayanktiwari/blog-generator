@@ -1,0 +1,61 @@
+version: "3.8"
+
+services:
+  client:
+    container_name: client
+    build:
+      context: .  
+      dockerfile: ./infra/docker/client/Dockerfile
+      target: runner 
+    restart: always
+    ports:
+      - 3000:3000
+    networks:
+      - app_network
+    environment:  
+      - NEXT_PUBLIC_API_URL=http://server:6969
+    env_file:
+      - ./apps/client/.env
+    depends_on:
+      - server
+
+  server:
+    container_name: server
+    build:
+      context: .  
+      dockerfile: ./infra/docker/server/Dockerfile
+      target: runner 
+    restart: always
+    ports:
+      - 6969:6969
+    networks:
+      - app_network
+    environment:
+      DATABASE_URL: postgres://myuser:mypassword@db:5432/myappdb
+    env_file:
+      - ./apps/server/.env
+    depends_on:
+      - db
+
+  db:
+    container_name: labelnet-db
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_DB: myappdb
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    ports:
+      - 5432:5432
+    volumes:
+      - labelnet-db-data:/var/lib/postgresql/data
+    networks:
+      - app_network
+    
+volumes:
+  labelnet-db-data:
+    driver: local
+
+networks:
+  app_network:
+    driver: bridge

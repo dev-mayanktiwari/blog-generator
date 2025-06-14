@@ -1,0 +1,43 @@
+{
+  "name": "server",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nodemon src/index.ts",
+    "build": "esbuild src/index.ts --platform=node --bundle --outdir=dist",
+    "start": "pnpm run build && node dist/index.js",
+    "clean": "rm -rf dist"
+  },
+  "license": "ISC",
+  "author": {
+    "name": "Mayank Tiwari",
+    "email": "devmayanktiwari@gmail.com"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.8",
+    "@types/cors": "^2.8.18",
+    "@types/dotenv": "^8.2.3",
+    "@types/express": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/node": "^20",
+    "esbuild": "^0.25.4",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@workspace/constants": "workspace:*",
+    "@workspace/db": "workspace:*",
+    "@workspace/types": "workspace:*",
+    "@workspace/typescript-config": "workspace:*",
+    "@workspace/utils": "workspace:*",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dayjs": "^1.11.13",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "uuid": "^11.1.0"
+  }
+}
