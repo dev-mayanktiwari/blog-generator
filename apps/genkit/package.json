@@ -14,6 +14,12 @@
     "email": "devmayanktiwari@gmail.com"
   },
   "devDependencies": {
+    "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@genkit-ai/googleai": "^1.12.0",
+    "genkit": "^1.12.0",
+    "get-youtube-id": "^1.0.1"
   }
 }
