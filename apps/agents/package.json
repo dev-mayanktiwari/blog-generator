@@ -1,15 +1,13 @@
 {
   "name": "agents",
-  "version": "0.0.0",
-  "private": true,
+  "version": "1.0.0",
   "scripts": {
     "dev": "poetry run dev",
-    "build": "poetry build",
+    "build": "poetry run build",
     "start": "poetry run start"
   },
+  "keywords": ["adk", "agents"],
+  "author": "Mayank Tiwari",
   "license": "ISC",
-  "author": {
-    "name": "Mayank Tiwari",
-    "email": "devmayanktiwari@gmail.com"
-  }
+  "description": "A package for ADK agents"
 }
