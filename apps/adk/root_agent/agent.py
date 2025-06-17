@@ -3,7 +3,7 @@ from .subagents.web_search_agent.agent import web_search_agent
 from .subagents.output_structure_agent.agent import output_structure_agent
 
 root_agent = SequentialAgent(
-    name="WebSearchResultGatheringAgent",
+    name="W",
     sub_agents=[web_search_agent, output_structure_agent],
     description=(
         """

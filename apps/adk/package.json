@@ -1,0 +1,13 @@
+{
+  "name": "adk",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "adk:web": "adk web"
+  },
+  "license": "ISC",
+  "author": {
+    "name": "Mayank Tiwari",
+    "email": "devmayanktiwari@gmail.com"
+  }
+}

@@ -3,7 +3,7 @@ from google.adk.tools import google_search
 
 web_search_agent = Agent(
     name="WebSearchAgent",
-    model="gemini-2.5-pro-preview-06-05",
+    model="gemini-2.5-pro-preview-03-25",
     description=(
         "An intelligent web search agent that retrieves accurate, relevant, and concise information "
         "from the web using Google Search. It helps enrich blogs or summaries by fetching definitions, "

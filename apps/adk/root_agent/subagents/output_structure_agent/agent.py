@@ -9,7 +9,7 @@ class WebSearchResult(BaseModel):
     
 output_structure_agent = Agent(
     name="OutputStructureAgent",
-    model="gemini-2.5-pro-preview-06-05",
+    model="gemini-2.5-pro-preview-03-25",
     description=(
         "An agent that transforms raw web search results into a structured JSON object with clear fields: "
         "'definition', 'examples', and 'importance'. This helps in generating organized, readable content for blogs."
