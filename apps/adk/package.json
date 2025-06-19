@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "adk:web": "adk web"
+    "adk:web": "adk web",
+    "adk:api": "adk api_server"
   },
   "license": "ISC",
   "author": {
