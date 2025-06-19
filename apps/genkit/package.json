@@ -1,0 +1,33 @@
+{
+  "name": "genkit",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nodemon src/index.ts",
+    "build": "esbuild src/index.ts --platform=node --bundle --outdir=dist",
+    "start": "pnpm run build && node dist/index.js",
+    "clean": "rm -rf dist"
+  },
+  "license": "ISC",
+  "author": {
+    "name": "Mayank Tiwari",
+    "email": "devmayanktiwari@gmail.com"
+  },
+  "dependencies": {
+    "@genkit-ai/googleai": "^1.12.0",
+    "@workspace/types": "workspace:*",
+    "@workspace/typescript-config": "workspace:*",
+    "axios": "^1.9.0",
+    "dotenv": "^16.5.0",
+    "esbuild": "^0.25.4",
+    "genkit": "^1.12.0",
+    "uuid": "^11.1.0",
+    "youtube-transcript": "^1.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
