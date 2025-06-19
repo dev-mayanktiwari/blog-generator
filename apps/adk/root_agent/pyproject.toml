@@ -1,0 +1,18 @@
+[project]
+name = "root-agent"
+version = "0.1.0"
+description = "YouTube video summarizer and blog creator agent"
+authors = [
+    {name = "Mayank", email = "mayanktiwari1212.mt@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "google-adk (>=1.3.0,<2.0.0)"
+]
+
+[project.scripts]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

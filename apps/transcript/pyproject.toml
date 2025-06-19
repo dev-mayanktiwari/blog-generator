@@ -1,0 +1,24 @@
+[project]
+name = "transcript"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Mayank",email = "mayanktiwari1212.mt@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+    "youtube-transcript-api (>=1.1.0,<2.0.0)",
+    "flask (>=3.1.1,<4.0.0)",
+    "flask-cors (>=6.0.1,<7.0.0)"
+]
+
+[tool.poetry]
+packages = [{include = "transcript", from = "src"}]
+
+[tool.poetry.scripts]
+start = "transcript.main:main"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
