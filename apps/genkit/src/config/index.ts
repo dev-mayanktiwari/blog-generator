@@ -1,18 +1,19 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-type ConfigKeys = "GEMINI_API_KEY" | "NODE_ENV";
+type ConfigKeys = "NODE_ENV" | "AGENT_URL" | "AGENT_APP_NAME";
+
 const _config: Record<ConfigKeys, string | undefined> = {
-  //   PORT: process.env.PORT,
   NODE_ENV: process.env.NODE_ENV,
-  GEMINI_API_KEY: process.env.GEMINI_API_KEY,
-  //JWT_SECRET: process.env.JWT_SECRET,
+  AGENT_URL: process.env.AGENT_URL,
+  AGENT_APP_NAME: process.env.AGENT_APP_NAME,
 };
 
 export const AppConfig = {
   get(key: ConfigKeys): string | number {
     const value = _config[key];
     if (value === undefined) {
+      console.error(`Configuration key "${key}" is not set.`);
       process.exit(1);
     }
 
