@@ -15,10 +15,15 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
+  id           Int          @id @default(autoincrement())
+  email        String       @unique
+  name         String?
+  posts        Post[]
+  registerType registerType @default(EMAIL)
+  password     String?
+  mediumId     String?      @unique
+  mediumToken  String?
+  googleId     String?      @unique
 }
 
 model Post {
@@ -28,4 +33,9 @@ model Post {
   published Boolean @default(false)
   authorId  Int
   author    User    @relation(fields: [authorId], references: [id])
+}
+
+enum registerType {
+  EMAIL
+  GOOGLE
 }
