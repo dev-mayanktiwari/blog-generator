@@ -1,12 +1,13 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-type ConfigKeys = "PORT" | "NODE_ENV" | "JWT_SECRET";
+type ConfigKeys = "PORT" | "NODE_ENV" | "JWT_SECRET" | "SAFE_COOKIE";
 
 const _config: Record<ConfigKeys, string | undefined> = {
   PORT: process.env.PORT,
   NODE_ENV: process.env.NODE_ENV,
   JWT_SECRET: process.env.JWT_SECRET,
+  SAFE_COOKIE: process.env.SAFE_COOKIE,
 };
 
 export const AppConfig = {

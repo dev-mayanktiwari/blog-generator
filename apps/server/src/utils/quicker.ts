@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import { sign } from "jsonwebtoken";
 import { TokenPayload } from "@workspace/types";
 import { AppConfig } from "../config";
+import bcrypt, { compare } from "bcrypt";
 
 export default {
   getSystemHealth: () => {
@@ -47,5 +48,14 @@ export default {
       expiresIn: "30d",
     });
     return token;
+  },
+  hashPassword: async (password: string) => {
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    return hashedPassword;
+  },
+  comparePassword: async (password: string, hashedPassword: string) => {
+    const isMatch = await compare(password, hashedPassword);
+    return isMatch;
   },
 };
