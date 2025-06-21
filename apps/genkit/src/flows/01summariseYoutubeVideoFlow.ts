@@ -1,4 +1,4 @@
-import { summarizeYoutubeVideoPrompt } from "../prompts";
+import { generateYoutubeVideoBlogPrompt } from "../prompts";
 import ai from "../services/ai";
 import {
   summarizeTranscriptSchema,
@@ -32,7 +32,7 @@ export const summariseYoutubeVideoFlow = ai.defineFlow(
   async ({ videoURL, length, tone }) => {
     const response = await ai.generate({
       prompt: [
-        { text: summarizeYoutubeVideoPrompt(length, tone) },
+        { text: generateYoutubeVideoBlogPrompt(length, tone) },
         { media: { url: videoURL, contentType: "video/mp4" } },
       ],
       output: {

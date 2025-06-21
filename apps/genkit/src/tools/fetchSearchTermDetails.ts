@@ -6,6 +6,7 @@ import {
 import axios from "axios";
 import { AppConfig } from "../config";
 import ai from "../services/ai";
+import { v4 as uuidv4 } from "uuid";
 
 export const fetchSearchTermDetailsTool = ai.defineTool(
   {
@@ -20,10 +21,21 @@ export const fetchSearchTermDetailsTool = ai.defineTool(
       searchTerms
     );
     try {
+      const sessionId = uuidv4();
+      const userId = uuidv4();
+      const sessionCreationPayload = {
+        state: { preferred_language: "English", visit_count: 1 },
+      };
+
+      await axios.post(
+        `${String(AppConfig.get("AGENT_URL"))}/apps/${String(AppConfig.get("AGENT_APP_NAME"))}/users/${userId}/sessions/${sessionId}`,
+        sessionCreationPayload
+      );
+
       const payload: StreamRequest = {
         app_name: String(AppConfig.get("AGENT_APP_NAME")),
-        user_id: "abc_123",
-        session_id: "abc_123",
+        user_id: userId,
+        session_id: sessionId,
         new_message: {
           role: "user",
           parts: [

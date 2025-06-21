@@ -14,17 +14,21 @@
     "email": "devmayanktiwari@gmail.com"
   },
   "dependencies": {
+    "@genkit-ai/express": "^1.13.0",
     "@genkit-ai/googleai": "^1.12.0",
     "@workspace/types": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
     "axios": "^1.9.0",
     "dotenv": "^16.5.0",
     "esbuild": "^0.25.4",
+    "express": "^5.1.0",
+    "firebase-functions": "^6.3.2",
     "genkit": "^1.12.0",
     "uuid": "^11.1.0",
     "youtube-transcript": "^1.2.1"
   },
   "devDependencies": {
+    "@types/express": "^5.0.2",
     "@types/node": "^20",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",

@@ -6,7 +6,7 @@ import {
 import ai from "../services/ai";
 import { generateBlogPrompt } from "../prompts";
 
-export const generateSummaryFlow = ai.defineFlow(
+export const generateFinalSummaryFlow = ai.defineFlow(
   {
     name: "generateFinalSummaryUsingWebSearchResultsFlow",
     inputSchema: generateBlogSchema,

@@ -1,5 +1,4 @@
 import {
-  finalPostSchema,
   summarizeYoutubeVideoSchema,
   TGenerateBlogSchema,
 } from "@workspace/types";
@@ -7,8 +6,8 @@ import ai from "../services/ai";
 import { summariseYoutubeVideoFlow } from "./01summariseYoutubeVideoFlow";
 import { generateSearchTermsFlow } from "./02generateSearchTerms";
 import { getSearchTermResults } from "./03getSearchTermResults";
-import { generateSummaryFlow } from "./04generateFinalSummaryFlow";
-import { fetchSearchTermDetailsTool } from "../tools/fetchSearchTermDetails";
+import { generateFinalSummaryFlow } from "./04generateFinalSummaryFlow";
+import { onCallGenkit } from "firebase-functions/https";
 
 export const generateBlogFlow = ai.defineFlow(
   {
@@ -27,7 +26,7 @@ export const generateBlogFlow = ai.defineFlow(
       length: length,
       tone: tone,
     };
-    const post = await generateSummaryFlow(generateSummaryPayload);
+    const post = await generateFinalSummaryFlow(generateSummaryPayload);
     console.log("Generated blog post:", post);
     return {
       summary,
@@ -40,3 +39,5 @@ export const generateBlogFlow = ai.defineFlow(
     };
   }
 );
+
+export const createBlog = onCallGenkit(generateBlogFlow);
