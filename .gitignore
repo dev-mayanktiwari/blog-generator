@@ -36,3 +36,5 @@ npm-debug.log*
 *.pem
 packages/db/generated/prisma
 logs/
+
+.genkit
