@@ -1,3 +1,15 @@
+# What is BlogAI?
+
+BlogAI is an AI-powered platform that transforms YouTube videos into professionally written, SEO-optimized blog posts in seconds. Leveraging advanced AI flows, a modern web interface, and a robust backend, BlogAI streamlines content creation for creators, marketers, and businesses.
+
+---
+
+## Demo Video
+
+[![Watch the Demo](./public/thumbnail.png)](https://youtu.be/xhMsTVs4CWc)
+
+---
+
 # Blog Generator Monorepo
 
 A full-stack, AI-powered blog generation platform. This monorepo contains all services, packages, and infrastructure needed to run the system locally or in production.
@@ -24,7 +36,7 @@ This project enables users to generate high-quality blog posts from YouTube vide
 
 ## Architecture
 
-![Blog Generator Architecture](https://ik.imagekit.io/xpswehril/diagram-export-6-24-2025-3_24_33-AM%20(1).png?updatedAt=1750715986536)
+![Blog Generator Architecture](./public/architecture.png)
 
 ---
 
@@ -127,59 +139,3 @@ blog-generator/
 ```bash
 pnpm install
 ```
-
-### Database
-- Uses PostgreSQL (see `docker-compose.yaml` for default credentials)
-- Prisma schema: `packages/db/prisma/schema.prisma`
-- To migrate DB:
-  ```bash
-  pnpm --filter @workspace/db prisma migrate dev
-  ```
-
-### Running Apps Locally
-- **Client:** `pnpm --filter @workspace/web dev`
-- **Server:** `pnpm --filter @workspace/server dev`
-- **Genkit:** `pnpm --filter @workspace/genkit dev`
-- **ADK/Transcript:** See respective READMEs for Python/Poetry setup
-
----
-
-## Running with Docker
-
-The project is fully dockerized. To run all services:
-
-```bash
-docker-compose up --build
-```
-
-- **Client:** http://localhost:3000
-- **Server:** http://localhost:6969
-- **DB:** localhost:5432 (see credentials in `docker-compose.yaml`)
-- **Genkit/Transcript:** Internal services, see logs for ports
-
-Each service has its own Dockerfile in `infra/docker/`.
-
----
-
-## Environment Variables
-
-- Each app/package may require its own `.env` file (see `apps/*/.env.example`)
-- Main variables:
-  - `DATABASE_URL` (for server/db)
-  - `NEXT_PUBLIC_API_URL` (for client)
-  - AI/Genkit API keys as needed
-
----
-
-## Contributing
-
-1. Fork the repo
-2. Create a feature branch
-3. Make changes and add tests
-4. Open a PR
-
----
-
-## License
-
-MIT
