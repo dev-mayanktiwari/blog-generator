@@ -150,9 +150,6 @@ importers:
       '@genkit-ai/googleai':
         specifier: ^1.12.0
         version: 1.12.0(genkit@1.12.0)
-      '@workspace/agents-client':
-        specifier: workspace:*
-        version: link:../../packages/agents-client
       '@workspace/constants':
         specifier: workspace:*
         version: link:../../packages/constants
@@ -232,15 +229,6 @@ importers:
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
-
-  packages/agents-client:
-    dependencies:
-      '@workspace/types':
-        specifier: workspace:*
-        version: link:../types
-      axios:
-        specifier: ^1.9.0
-        version: 1.9.0
 
   packages/auth:
     dependencies:
