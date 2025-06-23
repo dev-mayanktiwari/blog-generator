@@ -19,13 +19,13 @@ const Index = () => {
       <ComingSoonSection />
       <CTASection />
 
-      <main className="flex min-h-screen flex-col items-center justify-center p-24">
+      {/* <main className="flex min-h-screen flex-col items-center justify-center p-24">
         <h1 className="text-4xl font-bold mb-4">Welcome to BlogAI</h1>
         <p className="mb-8">Create amazing content with AI-powered tools.</p>
         <Link href="/get-started">
           <Button variant="outline">Get Started</Button>
         </Link>
-      </main>
+      </main> */}
 
       {/* Footer */}
       <footer className="py-8 px-4 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
