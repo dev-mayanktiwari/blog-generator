@@ -27,7 +27,7 @@ export const generateBlogFlow = ai.defineFlow(
       tone: tone,
     };
     const post = await generateFinalSummaryFlow(generateSummaryPayload);
-    console.log("Generated blog post:", post);
+    // console.log("Generated blog post:", post);
     return {
       summary,
       searchTerms,

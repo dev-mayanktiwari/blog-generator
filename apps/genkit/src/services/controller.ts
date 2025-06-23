@@ -21,7 +21,7 @@ export const generateBlogController = async (req: Request, res: Response) => {
     const result = await generateBlogFlow(safeParse.data);
     res.status(200).json(result);
   } catch (error) {
-    console.error("Error generating blog:", error);
+    // console.error("Error generating blog:", error);
     res.status(500).json({ error: "Failed to generate blog" });
   }
 };

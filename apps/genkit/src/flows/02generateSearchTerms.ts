@@ -23,20 +23,20 @@ export const generateSearchTermsFlow = ai.defineFlow(
     const response = await ai.generate({
       prompt: generateSearchTermsPrompt(summary),
     });
-    console.log(
-      "Raw AI response for search terms from generate search terms:",
-      response.text
-    );
+    // // console.log(
+    //   "Raw AI response for search terms from generate search terms:",
+    //   response.text
+    // );
 
-    console.log(
-        "Raw AI output for search terms from generate search terms:",
-        response.output
-      );
+    // console.log(
+    //     "Raw AI output for search terms from generate search terms:",
+    //     response.output
+    //   );
     const parsed = response.output;
-    console.log("Parsed AI response for search terms:", parsed);
+    // console.log("Parsed AI response for search terms:", parsed);
     // const parsed = response.text
 
-    console.log("Parsed AI response for search terms:", parsed);
+    // console.log("Parsed AI response for search terms:", parsed);
 
     if (!parsed.searchTerms || !Array.isArray(parsed.searchTerms)) {
       throw new Error(

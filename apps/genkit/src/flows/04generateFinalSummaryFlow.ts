@@ -13,7 +13,7 @@ export const generateFinalSummaryFlow = ai.defineFlow(
     outputSchema: finalPostSchema,
   },
   async (payload: TGenerateBlogSchema) => {
-    console.log("Payload for generateSummaryFlow:", payload);
+    // console.log("Payload for generateSummaryFlow:", payload);
     const response = await ai.generate({
       prompt: generateBlogPrompt(payload),
       output: {
@@ -21,14 +21,14 @@ export const generateFinalSummaryFlow = ai.defineFlow(
       },
     });
 
-    console.log(
-      "Generated AI response text for summary is (from generate summary flow):",
-      response.text
-    );
+    // console.log(
+    //   "Generated AI response text for summary is (from generate summary flow):",
+    //   response.text
+    // );
 
     const parsed = response.output;
 
-    console.log("Parsed AI response for summary:", parsed);
+    // console.log("Parsed AI response for summary:", parsed);
 
     if (!parsed?.title || !parsed?.content) {
       throw new Error(

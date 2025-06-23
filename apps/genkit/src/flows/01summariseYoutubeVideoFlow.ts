@@ -40,8 +40,8 @@ export const summariseYoutubeVideoFlow = ai.defineFlow(
       },
     });
 
-    console.log("Raw AI response for YouTube video summary:");
-    console.log("Raw AI output for YouTube video summary:", response.output);
+    // console.log("Raw AI response for YouTube video summary:");
+    // console.log("Raw AI output for YouTube video summary:", response.output);
     return {
       summary: response.output?.summary ?? "",
     };

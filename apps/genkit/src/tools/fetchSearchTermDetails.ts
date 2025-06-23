@@ -16,10 +16,10 @@ export const fetchSearchTermDetailsTool = ai.defineTool(
     outputSchema: searchTermResultSchema,
   },
   async ({ searchTerms }) => {
-    console.log(
-      "Search terms received in fetchSearchTermDetailsTool:",
-      searchTerms
-    );
+    // console.log(
+    //   "Search terms received in fetchSearchTermDetailsTool:",
+    //   searchTerms
+    // );
     try {
       const sessionId = uuidv4();
       const userId = uuidv4();
@@ -88,7 +88,7 @@ export const fetchSearchTermDetailsTool = ai.defineTool(
               chunks.push(jsonStr);
             }
 
-            console.log(`Received ${chunks.length} SSE events`);
+            // console.log(`Received ${chunks.length} SSE events`);
 
             if (chunks.length < 2) {
               throw new Error("Expected at least 2 SSE events, received fewer");
@@ -96,7 +96,7 @@ export const fetchSearchTermDetailsTool = ai.defineTool(
 
             // Parse the second event (index 1)
             const secondEventData = JSON.parse(chunks[1]!);
-            console.log("Second event data:", secondEventData);
+            // console.log("Second event data:", secondEventData);
 
             // Extract content from the second event
             const content = secondEventData?.content?.parts?.[0]?.text;
@@ -105,11 +105,11 @@ export const fetchSearchTermDetailsTool = ai.defineTool(
               throw new Error("No content found in second SSE event");
             }
 
-            console.log("Extracted content:", content);
+            // console.log("Extracted content:", content);
 
             // Parse the JSON content to get structured data
             const structuredData = JSON.parse(content);
-            console.log("Structured data from content:", structuredData);
+            // console.log("Structured data from content:", structuredData);
             // Validate the structure and return
             if (
               structuredData.term1 &&

@@ -4,16 +4,16 @@ import { fetchSearchTermDetailsTool } from "../tools/fetchSearchTermDetails";
 import { generateSearchTermsResultsPrompt } from "../prompts";
 
 export async function getSearchTermResults(searchTerms: TSearchTermsSchema) {
-  console.log("Search terms received in getSearchTermResults:", searchTerms);
+  // console.log("Search terms received in getSearchTermResults:", searchTerms);
   const response = await ai.generate({
     prompt: generateSearchTermsResultsPrompt(searchTerms),
     tools: [fetchSearchTermDetailsTool],
   });
 
-  console.log(
-    "Generated AI response text for search term results (From get search terms results):",
-    response.output
-  );
+  // console.log(
+  //   "Generated AI response text for search term results (From get search terms results):",
+  //   response.output
+  // );
 
   return response.output;
 }
