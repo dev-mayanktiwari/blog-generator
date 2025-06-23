@@ -1,3 +1,8 @@
+import {
+  TSummarizeYoutubeVideoSchema,
+  TUserLoginInput,
+  TUserRegistrationInput,
+} from "@workspace/types";
 import axios, { type AxiosRequestConfig, type AxiosResponse } from "axios";
 
 const apiClient = axios.create({
@@ -25,11 +30,36 @@ export const apiRequest = async <T>(config: AxiosRequestConfig): Promise<T> => {
 // API service functions
 export const authService = {
   // @ts-ignore
-  signup: (userData) =>
+  signup: (userData: TUserRegistrationInput) =>
     apiRequest({
       method: "POST",
       url: "/auth/register",
       data: userData,
+    }),
+  login: (credentials: TUserLoginInput) =>
+    apiRequest({
+      method: "POST",
+      url: "/auth/login",
+      data: credentials,
+    }),
+  logout: () =>
+    apiRequest({
+      method: "POST",
+      url: "/auth/logout",
+    }),
+  checkAuth: () =>
+    apiRequest({
+      method: "GET",
+      url: "/auth/me",
+    }),
+};
+
+export const generateContentService = {
+  generateBlog: (data: TSummarizeYoutubeVideoSchema) =>
+    apiRequest({
+      method: "POST",
+      url: "/user/generate-blog",
+      data,
     }),
 };
 

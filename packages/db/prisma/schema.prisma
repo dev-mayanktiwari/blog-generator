@@ -29,10 +29,14 @@ model User {
 model Post {
   id        Int     @id @default(autoincrement())
   title     String
-  content   String?
+  content   String
+  videoUrl  String
+  length    String
+  tone      String
   published Boolean @default(false)
   authorId  Int
   author    User    @relation(fields: [authorId], references: [id])
+  createdAt DateTime @default(now())
 }
 
 enum registerType {

@@ -13,7 +13,7 @@ export const CTASection = () => {
           Join thousands of creators who are already using AI to supercharge
           their content creation.
         </p>
-        <Link href="/generate">
+        <Link href="/get-started">
           <Button
             size="lg"
             className="bg-white text-purple-600 hover:bg-gray-100 px-8 py-4 rounded-full text-lg font-semibold shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-200"
