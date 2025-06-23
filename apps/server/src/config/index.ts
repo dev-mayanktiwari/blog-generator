@@ -7,7 +7,8 @@ type ConfigKeys =
   | "JWT_SECRET"
   | "SAFE_COOKIE"
   | "GENKIT_API_KEY"
-  | "GENKIT_FLOW_URL";
+  | "GENKIT_FLOW_URL"
+  | "CORS_ORIGIN";
 
 const _config: Record<ConfigKeys, string | undefined> = {
   PORT: process.env.PORT,
@@ -16,6 +17,7 @@ const _config: Record<ConfigKeys, string | undefined> = {
   SAFE_COOKIE: process.env.SAFE_COOKIE,
   GENKIT_API_KEY: process.env.GENKIT_API_KEY,
   GENKIT_FLOW_URL: process.env.GENKIT_FLOW_URL,
+  CORS_ORIGIN: process.env.CORS_ORIGIN || "http://localhost:3000",
 };
 
 export const AppConfig = {

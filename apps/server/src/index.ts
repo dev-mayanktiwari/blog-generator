@@ -17,7 +17,7 @@ const PORT = AppConfig.get("PORT");
 // Middlewares
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://localhost:3001"],
+    origin: String(AppConfig.get("CORS_ORIGIN")),
     credentials: true,
   })
 );
