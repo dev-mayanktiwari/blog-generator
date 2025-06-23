@@ -27,7 +27,6 @@
   },
   "dependencies": {
     "@genkit-ai/googleai": "^1.12.0",
-    "@workspace/agents-client": "workspace:*",
     "@workspace/constants": "workspace:*",
     "@workspace/db": "workspace:*",
     "@workspace/types": "workspace:*",
