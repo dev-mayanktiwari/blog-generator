@@ -8,7 +8,6 @@ import { AppConfig } from "./config";
 import healthRouter from "./routes/healthRoutes";
 import globalErrorHandler from "./middlewares/globalErrorHandler";
 import authRouter from "./routes/authRouter";
-import agentRouter from "./routes/agentRouter";
 import authMiddleware from "./middlewares/authMiddleware";
 import userRouter from "./routes/userRouter";
 
@@ -31,7 +30,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/api/v1/health", healthRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", authMiddleware, userRouter);
-app.use("/api/v1/agents", authMiddleware, agentRouter);
 
 //404 Handler
 app.use((req: Request, _: Response, next: NextFunction) => {
