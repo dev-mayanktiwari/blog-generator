@@ -17,7 +17,7 @@ const PORT = AppConfig.get("PORT");
 // Middlewares
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://your-production-url.com"],
+    origin: String(AppConfig.get("CORS_ORIGIN")),
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
