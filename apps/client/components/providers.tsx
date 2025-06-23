@@ -94,8 +94,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       };
       const res = await authService.signup(userData);
       console.log("Registration response:", res);
-      // @ts-ignore
-      setUser(res.data.user);
+      // setUser(res.data.user); 
     } finally {
       setLoading(false);
     }

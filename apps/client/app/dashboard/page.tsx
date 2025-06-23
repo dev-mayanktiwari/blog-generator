@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/components/providers";
-import { useRouter } from "next/navigation";
+import { ProtectedRoute } from "@/components/ProtectedRouteWrapper";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import { generateContentService } from "@/lib/apiClient";
@@ -38,27 +38,22 @@ interface BlogPost {
   authorId?: number;
 }
 
-const Dashboard = () => {
+const DashboardContent = () => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const { user, loading } = useAuth();
-  const router = useRouter();
+  const { user } = useAuth();
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.push("/login");
-      return;
-    }
-    if (user && !loading) {
+    if (user) {
       fetchPosts();
     }
-  }, [user, loading, router]);
+  }, [user]);
 
   const fetchPosts = async () => {
     try {
-      console.log("Runnng");
+      console.log("Running");
       setIsLoading(true);
       const response = await generateContentService.getPosts();
       console.log("Fetched posts response:", response);
@@ -83,28 +78,6 @@ const Dashboard = () => {
     }
   };
 
-  // const handleDelete = async (postId: number) => {
-  //   try {
-  //     const response = await generateContentService.getPosts();
-  //     //@ts-ignore
-  //     if (response.success) {
-  //       setPosts(posts.filter((post) => post.id !== postId));
-  //       toast.success("Success", {
-  //         description: "Post deleted successfully",
-  //       });
-  //     } else {
-  //       toast.error("Error", {
-  //         description: "Failed to delete post",
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error("Error deleting post:", error);
-  //     toast.error("Error", {
-  //       description: "Failed to delete post",
-  //     });
-  //   }
-  // };
-
   const handleViewPost = (post: BlogPost) => {
     setSelectedPost(post);
     setIsFullScreen(true);
@@ -124,9 +97,6 @@ const Dashboard = () => {
       minute: "2-digit",
     });
   };
-
-  if (loading) return null;
-  if (!user) return null;
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -231,25 +201,6 @@ const Dashboard = () => {
                           </Link>
                         )}
                       </div>
-
-                      <div className="flex gap-2">
-                        {/* <Button
-                          size="sm"
-                          variant="outline"
-                          className="text-green-600 hover:text-green-700 hover:bg-green-50 dark:hover:bg-green-900/20"
-                        >
-                          <ExternalLink className="h-4 w-4 mr-1" />
-                          Medium
-                        </Button> */}
-                        {/* <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleDelete(post.id)}
-                          className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button> */}
-                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -297,13 +248,6 @@ const Dashboard = () => {
               </div>
 
               <div className="flex gap-2 ml-4">
-                {/* <Button
-                  size="sm"
-                  className="bg-green-600 hover:bg-green-700 text-white"
-                >
-                  <ExternalLink className="h-4 w-4 mr-1" />
-                  Publish to Medium
-                </Button> */}
                 <Button size="sm" variant="outline" onClick={closeFullScreen}>
                   <X className="h-4 w-4" />
                 </Button>
@@ -358,6 +302,15 @@ const Dashboard = () => {
         </div>
       )}
     </div>
+  );
+};
+
+// Protected Dashboard Component
+const Dashboard = () => {
+  return (
+    <ProtectedRoute>
+      <DashboardContent />
+    </ProtectedRoute>
   );
 };
 

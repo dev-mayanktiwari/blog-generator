@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Navigation } from "@/components/Navigation";
 import { DynamicLoader } from "@/components/DynamicLoader";
 import { BlogGenerationForm } from "@/components/BlogGenerationForm";
 import { GeneratedPostDisplay } from "@/components/GeneratedPostDisplay";
+import { ProtectedRoute } from "@/components/ProtectedRouteWrapper";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/providers";
 import { generateContentService } from "@/lib/apiClient";
@@ -31,7 +31,7 @@ type ToneType =
   | "professional"
   | "conversational";
 
-const Generate = () => {
+const GenerateContent = () => {
   const [loading, setLoading] = useState(false);
   const [generatedPost, setGeneratedPost] = useState<GeneratedPost | null>(
     null
@@ -39,14 +39,8 @@ const Generate = () => {
   const [publishingToMedium, setPublishingToMedium] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { user, loading: authLoading } = useAuth();
+  const { user } = useAuth(); // No need for authLoading here since ProtectedRoute handles it
   const router = useRouter();
-
-  useEffect(() => {
-    if (!authLoading && !user) {
-      router.push("/login");
-    }
-  }, [user, authLoading, router]);
 
   const handleGenerate = async (formData: {
     videoUrl: string;
@@ -67,12 +61,14 @@ const Generate = () => {
       return;
     }
 
+    // At this point, we know user exists because of ProtectedRoute
     if (!user?.id) {
-      const errorMsg = "Please log in to generate posts";
+      const errorMsg = "Authentication error. Please try logging in again.";
       setError(errorMsg);
       toast.error("Authentication Required", {
         description: errorMsg,
       });
+      router.push("/login");
       return;
     }
 
@@ -177,23 +173,6 @@ const Generate = () => {
     }
   };
 
-  // Show loading state for auth
-  if (authLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-purple-900/20 dark:to-blue-900/20 flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-purple-600" />
-          <p className="text-gray-600 dark:text-gray-400">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Redirect if not authenticated
-  if (!user) {
-    return null;
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-purple-900/20 dark:to-blue-900/20">
       <Navigation />
@@ -221,6 +200,15 @@ const Generate = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+// Wrap the component with ProtectedRoute
+const Generate = () => {
+  return (
+    <ProtectedRoute>
+      <GenerateContent />
+    </ProtectedRoute>
   );
 };
 
