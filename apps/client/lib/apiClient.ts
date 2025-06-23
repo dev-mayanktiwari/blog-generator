@@ -61,6 +61,11 @@ export const generateContentService = {
       url: "/user/generate-blog",
       data,
     }),
+  getPosts: () =>
+    apiRequest({
+      method: "GET",
+      url: "/user/get-user-posts",
+    }),
 };
 
 export default apiClient;

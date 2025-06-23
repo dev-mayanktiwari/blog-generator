@@ -28,8 +28,8 @@ const GetStarted = () => {
     setError("");
     try {
       await register(name, email, password);
-      toast.success("Registered successfully!");
-      router.push("/dashboard");
+      toast.success("Registered successfully! Please login.");
+      router.push("/login");
     } catch (err: any) {
       setError(err.message || "Registration failed");
       toast.error("Registration failed", { description: err.message });
