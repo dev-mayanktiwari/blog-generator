@@ -22,6 +22,10 @@ A full-stack, AI-powered blog generation platform. This monorepo contains all se
 
 This project enables users to generate high-quality blog posts from YouTube videos using advanced AI flows, with a modern web interface, robust backend, and modular architecture. It leverages microservices, a shared type system, and reusable UI components for rapid development and scalability.
 
+## Architecture
+
+![Blog Generator Architecture](https://ik.imagekit.io/xpswehril/diagram-export-6-24-2025-3_24_33-AM%20(1).png?updatedAt=1750715986536)
+
 ---
 
 ## Monorepo Structure
