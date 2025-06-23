@@ -19,4 +19,32 @@ export default {
       where: { email },
     });
   },
+
+  addUserPost: async (post: {
+    userId: string;
+    title: string;
+    content: string;
+    videoUrl: string;
+    tone: string;
+    length: string;
+  }) => {
+    const { userId, title, content, videoUrl, tone, length } = post;
+    return prisma.post.create({
+      data: {
+        title,
+        content,
+        videoUrl,
+        length,
+        tone,
+        authorId: Number(userId),
+      },
+    });
+  },
+
+  getUserPosts: async (userId: string) => {
+    return await prisma.post.findMany({
+      where: { authorId: Number(userId) },
+      orderBy: { createdAt: "desc" },
+    });
+  },
 };

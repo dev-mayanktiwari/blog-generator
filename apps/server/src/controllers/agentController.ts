@@ -21,7 +21,7 @@ export default {
       }
 
       const response = await agentsClient.get_transcript(safeParse.data);
-      console.log("Response from agentsClient:", response);
+      // console.log("Response from agentsClient:", response);
       
       return httpResponse(
         req,

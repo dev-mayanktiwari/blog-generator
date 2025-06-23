@@ -7,6 +7,7 @@ import { AppConfig } from "../config";
 
 const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   const token = req.cookies.authToken;
+  // console.log("Auth token from cookies:", token);
   const request = req as AuthenticatedRequest;
   if (!token || !token.startsWith("Bearer ")) {
     return httpError(
@@ -39,6 +40,7 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
       email: decodedToken.email,
       name: decodedToken.name,
     };
+    // console.log("Decoded user from token:", user);
     request.user = user;
 
     next();

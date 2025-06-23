@@ -3,6 +3,6 @@ import agentController from "../controllers/agentController";
 
 const agentRouter: Router = Router();
 
-agentRouter.get("/get-transcript", agentController.getVideoTranscript);
+agentRouter.get("/generate-blog", agentController.getGeneratedBlog);
 
 export default agentRouter;

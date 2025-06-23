@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import { sign } from "jsonwebtoken";
 import { TokenPayload } from "@workspace/types";
 import { AppConfig } from "../config";
-import bcrypt, { compare } from "bcrypt";
+import bcrypt, { compare } from "bcryptjs";
 
 export default {
   getSystemHealth: () => {
