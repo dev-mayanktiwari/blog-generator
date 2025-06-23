@@ -9,7 +9,7 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   const token = req.cookies.authToken;
   // console.log("Auth token from cookies:", token);
   const request = req as AuthenticatedRequest;
-  if (!token || !token.startsWith("Bearer ")) {
+  if (!token) {
     return httpError(
       next,
       new Error(ResponseMessage.UNAUTHORIZED),
@@ -18,7 +18,7 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     );
   }
 
-  const tokenValue = token.split(" ")[1];
+  const tokenValue = token;
 
   if (!tokenValue) {
     return httpError(
