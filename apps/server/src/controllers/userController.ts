@@ -37,13 +37,14 @@ export default {
             length: safeParse.data.length,
           }),
         });
+        console.log("Response", response);
         const post = await response.json();
 
-        // console.log("Response from Genkit:", post);
+        console.log("Response from Genkit:", post);
         //@ts-ignore
         if (!response.ok || !post || !post.post.title || !post.post.content) {
           // console.log(response.ok);
-          // console.log("Error", response.status, response);
+          console.log("Error", response.status, response);
           return httpError(
             next,
             new Error("Failed to generate post"),
@@ -76,12 +77,12 @@ export default {
           }
         );
       } catch (error) {
-        // console.error("Error generating post:", error);
-        return httpResponse(
+        console.error("Error generating post:", error);
+        return httpError(
+          next,
+          new Error("Failed to generate post"),
           req,
-          res,
-          ErrorStatusCodes.CLIENT_ERROR.BAD_REQUEST,
-          "Failed to generate post"
+          ErrorStatusCodes.CLIENT_ERROR.BAD_REQUEST
         );
       }
     }
@@ -93,13 +94,6 @@ export default {
 
       try {
         const posts = await dbServices.getUserPosts(userId);
-        httpResponse(
-          req,
-          res,
-          SuccessStatusCodes.OK,
-          "Posts fetched successfully",
-          { posts }
-        );
         if (!posts || posts.length === 0) {
           httpResponse(
             req,
@@ -107,6 +101,14 @@ export default {
             SuccessStatusCodes.OK,
             "No posts found for this user",
             { posts: [] }
+          );
+        } else {
+          httpResponse(
+            req,
+            res,
+            SuccessStatusCodes.OK,
+            "Posts fetched successfully",
+            { posts }
           );
         }
       } catch (error) {

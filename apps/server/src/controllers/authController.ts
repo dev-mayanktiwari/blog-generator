@@ -153,9 +153,9 @@ export default {
         res.cookie("authToken", token, {
           httpOnly: true,
           secure: String(AppConfig.get("SAFE_COOKIE")) === "true",
+          path: "/",
           sameSite:
             String(AppConfig.get("SAFE_COOKIE")) === "true" ? "none" : "lax",
-          path: "/api/v1",
           maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
         });
 
@@ -190,7 +190,6 @@ export default {
         secure: String(AppConfig.get("SAFE_COOKIE")) === "true",
         sameSite:
           String(AppConfig.get("SAFE_COOKIE")) === "true" ? "none" : "lax",
-        path: "/api/v1",
       });
 
       httpResponse(

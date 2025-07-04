@@ -12,17 +12,36 @@ import authMiddleware from "./middlewares/authMiddleware";
 import userRouter from "./routes/userRouter";
 
 const app: Application = express();
-const PORT = AppConfig.get("PORT");
+const PORT = Number(AppConfig.get("PORT")) || 8080;
 
-// Middlewares
 app.use(
   cors({
-    origin: String(AppConfig.get("CORS_ORIGIN")),
+    origin: (origin, callback) => {
+      const isDevelopment = String(AppConfig.get("NODE_ENV")) === "development";
+
+      if (isDevelopment) {
+        // Allow any origin in development
+        callback(null, true);
+      } else {
+        // Production whitelist
+        const allowedOrigins = [
+          "https://blogai.mayanktiwari.tech",
+          "https://blogai-opal.vercel.app",
+        ];
+
+        if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true);
+        } else {
+          callback(new Error("Not allowed by CORS"));
+        }
+      }
+    },
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
+
 app.use(helmet());
 app.use(cookieParser());
 app.use(express.json());
