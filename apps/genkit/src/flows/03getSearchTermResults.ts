@@ -1,4 +1,8 @@
-import { TSearchTermsSchema } from "@workspace/types";
+import {
+  searchTermResultSchema,
+  searchTermsSchema,
+  TSearchTermsSchema,
+} from "@workspace/types";
 import ai from "../services/ai";
 import { fetchSearchTermDetailsTool } from "../tools/fetchSearchTermDetails";
 import { generateSearchTermsResultsPrompt } from "../prompts";
@@ -18,19 +22,25 @@ export async function getSearchTermResults(searchTerms: TSearchTermsSchema) {
   return response.output;
 }
 
-// export const getSearchTermResultsFlow = ai.defineFlow(
-//   {
-//     name: "getSearchTermResultsFlow",
-//     inputSchema: searchTermsSchema,
-//   },
-//   async (payload) => {
-//     const response = await getSearchTermResults(payload);
 
-//     console.log(
-//       "Generated AI response text for search term results (From get search terms results flow):",
-//       response.text
-//     );
+export const getSearchTermResultsFlow = ai.defineFlow(
+  {
+    name: "getSearchTermsResult",
+    inputSchema: searchTermsSchema,
+    outputSchema: searchTermResultSchema,
+  },
+  async ({ searchTerms }) => {
+    const { text, output } = await ai.generate({
+      prompt: generateSearchTermsResultsPrompt({ searchTerms }),
+      config: {
+        tools: [{ googleSearch: {} }],
+      },
+    });
 
-//     return response;
-//   }
-// );
+    // console.log("Hello");
+
+    // console.log("Output from getSearchTermResultsFlow:", output);
+
+    return output;
+  }
+);

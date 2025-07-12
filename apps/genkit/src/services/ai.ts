@@ -9,7 +9,7 @@ const ai = genkit({
       apiKey: String(AppConfig.get("GEMINI_API_KEY")),
     }),
   ],
-  model: googleAI.model("gemini-2.0-flash"),
+  model: googleAI.model("gemini-2.5-pro"),
 });
 
 export default ai;
