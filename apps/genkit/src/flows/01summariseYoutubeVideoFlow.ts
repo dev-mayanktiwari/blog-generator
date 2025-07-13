@@ -1,3 +1,4 @@
+import { logger } from "@workspace/utils";
 import { generateYoutubeVideoBlogPrompt } from "../prompts";
 import ai from "../services/ai";
 import {
@@ -29,10 +30,10 @@ export const summariseYoutubeVideoFlow = ai.defineFlow(
     inputSchema: summarizeYoutubeVideoSchema,
     outputSchema: summarizeTranscriptSchema,
   },
-  async ({ videoURL, length, tone }) => {
+  async ({ videoURL, length, tone, contentType }) => {
     const response = await ai.generate({
       prompt: [
-        { text: generateYoutubeVideoBlogPrompt(length, tone) },
+        { text: generateYoutubeVideoBlogPrompt(length, tone, contentType) },
         { media: { url: videoURL, contentType: "video/mp4" } },
       ],
       output: {
@@ -40,8 +41,12 @@ export const summariseYoutubeVideoFlow = ai.defineFlow(
       },
     });
 
-    // console.log("Raw AI response for YouTube video summary:");
-    // console.log("Raw AI output for YouTube video summary:", response.output);
+    logger.info("Flow One - Summary generated successfully.", {
+      meta: {
+        summary: response.output?.summary,
+      },
+    });
+
     return {
       summary: response.output?.summary ?? "",
     };

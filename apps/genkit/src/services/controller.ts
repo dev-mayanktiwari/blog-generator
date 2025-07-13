@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { summarizeYoutubeVideoSchema } from "@workspace/types";
 import { AppConfig } from "../config";
-import { generateBlogFlow } from "../flows/05generateBlogFlow";
+import { generateBlogFlow } from "../flows/06generateBlogFlow";
 
 export const generateBlogController = async (req: Request, res: Response) => {
   try {

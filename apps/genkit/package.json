@@ -4,6 +4,16 @@
   "private": true,
   "scripts": {
     "dev": "nodemon src/index.ts",
+    "dev:express": "GENKIT_ENV=dev nodemon src/index.ts",
+    "dev:genkit": "GENKIT_ENV=dev nodemon src/genkit-server.ts",
+    "start:express": "GENKIT_ENV=dev ts-node src/index.ts",
+    "start:genkit": "GENKIT_ENV=dev ts-node src/genkit-server.ts",
+    "ui:start": "genkit ui:start -p 3101",
+    "ui:stop": "genkit ui:stop",
+    "test:health": "curl -X GET http://localhost:8080/health",
+    "test:flows": "curl -X GET http://localhost:8080/flows",
+    "test:youtube": "curl -X POST http://localhost:8080/flows/summariseYoutubeVideoFlow -H 'Content-Type: application/json' -d '{\"videoURL\": \"https://www.youtube.com/watch?v=dQw4w9WgXcQ\", \"length\": \"short\", \"tone\": \"casual\", \"contentType\": \"blog\"}'",
+    "test:image": "curl -X POST http://localhost:8080/flows/imageGenerationFlow -H 'Content-Type: application/json' -d '{\"summary\": \"This is a test summary about artificial intelligence and machine learning technologies.\"}'",
     "build": "esbuild src/index.ts --platform=node --bundle --outdir=dist",
     "start": "pnpm run build && node dist/index.js",
     "clean": "rm -rf dist"
@@ -16,8 +26,11 @@
   "dependencies": {
     "@genkit-ai/express": "^1.13.0",
     "@genkit-ai/googleai": "^1.12.0",
+    "@genkit-ai/vertexai": "^1.14.1",
+    "@google-cloud/storage": "^7.16.0",
     "@workspace/types": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
+    "@workspace/utils": "workspace:*",
     "axios": "^1.9.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
