@@ -4,8 +4,9 @@ import { generateImagePrompt } from "../prompts";
 import { imageAi } from "../services/ai";
 import ai from "../services/ai";
 import vertexAI from "@genkit-ai/vertexai";
+import { googleAI } from "@genkit-ai/googleai";
 
-export const imagenImageGenerationFlow = imageAi.defineFlow(
+export const imagenImageGenerationFlow = ai.defineFlow(
   {
     name: "imageGenerationFlow",
     inputSchema: summarizeTranscriptSchema,
@@ -29,9 +30,12 @@ export const imagenImageGenerationFlow = imageAi.defineFlow(
 
       // Try Vertex AI first
       try {
-        const { media, text } = await imageAi.generate({
+        const { media, text } = await ai.generate({
+          model: googleAI.model("gemini-2.0-flash-preview-image-generation"),
           prompt: prompt,
-          output: { format: "media" },
+          config: {
+            responseModalities: ["TEXT", "IMAGE"],
+          },
         });
 
         logger.info("Image generation completed with Vertex AI", {
