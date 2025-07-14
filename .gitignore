@@ -38,3 +38,4 @@ packages/db/generated/prisma
 logs/
 
 .genkit
+gcp-key.json

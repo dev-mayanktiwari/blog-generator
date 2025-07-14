@@ -27,8 +27,20 @@ export default {
     videoUrl: string;
     tone: string;
     length: string;
+    contentType: string;
+    generateImage: boolean;
+    imageUrl?: string | null;
   }) => {
-    const { userId, title, content, videoUrl, tone, length } = post;
+    const {
+      userId,
+      title,
+      content,
+      videoUrl,
+      tone,
+      length,
+      contentType,
+      generateImage,
+    } = post;
     return prisma.post.create({
       data: {
         title,
@@ -36,6 +48,7 @@ export default {
         videoUrl,
         length,
         tone,
+        c
         authorId: Number(userId),
       },
     });

@@ -35,6 +35,8 @@ export default {
             videoURL: safeParse.data.videoURL,
             tone: safeParse.data.tone,
             length: safeParse.data.length,
+            contentType: safeParse.data.contentType,
+            generateImage: safeParse.data.generateImage,
           }),
         });
         console.log("Response", response);
@@ -42,7 +44,16 @@ export default {
 
         console.log("Response from Genkit:", post);
         //@ts-ignore
-        if (!response.ok || !post || !post.post.title || !post.post.content) {
+        if (
+          !response.ok ||
+          !post ||
+          // @ts-ignore
+          !post.post.title ||
+          // @ts-ignore
+          !post.post.content ||
+          // @ts-ignore
+          !post.imageUrl
+        ) {
           // console.log(response.ok);
           console.log("Error", response.status, response);
           return httpError(
@@ -63,6 +74,10 @@ export default {
           videoUrl: safeParse.data.videoURL,
           tone: safeParse.data.tone,
           length: safeParse.data.length,
+          contentType: safeParse.data.contentType,
+          generateImage: safeParse.data.generateImage,
+          //@ts-ignore
+          imageUrl: post.imageUrl || null,
         };
 
         const dbPost = await dbServices.addUserPost(postPayload);
