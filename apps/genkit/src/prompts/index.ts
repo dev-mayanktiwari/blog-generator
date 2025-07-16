@@ -1,4 +1,5 @@
 import {
+  TAdditionalPromptSchema,
   TGenerateBlogSchema,
   TSearchTermsSchema,
   TSummaryContentTypeSchema,
@@ -21,7 +22,8 @@ export function summarizeTranscriptPrompt(
 export function generateYoutubeVideoBlogPrompt(
   length: TSummaryLengthSchema,
   tone: TSummaryToneSchema,
-  contentType: TSummaryContentTypeSchema
+  contentType: TSummaryContentTypeSchema,
+  additionalPrompt: TAdditionalPromptSchema
 ): string {
   return `
 You are a skilled content creator and storyteller, capable of transforming YouTube video content into engaging, human-like blog posts that flow naturally and resonate with readers.
@@ -29,6 +31,13 @@ You are a skilled content creator and storyteller, capable of transforming YouTu
 📘 **Blog Type**: "${contentType}" (e.g., informative, tutorial, opinion, summary, narrative)  
 🗣️ **Tone**: "${tone}"  
 ✏️ **Length**: "${length}" (short ≈ 250–400 words, medium ≈ 500–800, long = 900+)
+
+---
+
+🧩 **Additional Prompt from User**:
+"${additionalPrompt}"
+
+> ⚠️ This is **important guidance** from the user. Be sure to **honor this request** and incorporate it meaningfully into the blog post. Interpret it with care and apply it to the tone, focus, examples, or structure of your writing.
 
 ---
 

@@ -30,10 +30,17 @@ export const summariseYoutubeVideoFlow = ai.defineFlow(
     inputSchema: summarizeYoutubeVideoSchema,
     outputSchema: summarizeTranscriptSchema,
   },
-  async ({ videoURL, length, tone, contentType }) => {
+  async ({ videoURL, length, tone, contentType, additionalPrompt }) => {
     const response = await ai.generate({
       prompt: [
-        { text: generateYoutubeVideoBlogPrompt(length, tone, contentType) },
+        {
+          text: generateYoutubeVideoBlogPrompt(
+            length,
+            tone,
+            contentType,
+            additionalPrompt
+          ),
+        },
         { media: { url: videoURL, contentType: "video/mp4" } },
       ],
       output: {
