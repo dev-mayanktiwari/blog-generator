@@ -21,6 +21,7 @@ export const imagenImageGenerationFlow = ai.defineFlow(
       const prompt = generateImagePrompt(summary);
       logger.info("Generated image prompt", {
         meta: {
+          prompt: prompt,
           promptLength: prompt.length,
           promptPreview: prompt.substring(0, 200) + "...",
         },

@@ -7,23 +7,6 @@ import {
   TSummaryLengthSchema,
 } from "@workspace/types";
 
-// export async function summariseTranscriptFlow(
-//   videoURL: string,
-//   length: TSummaryLengthSchema
-// ) {
-//   const response = await ai.generate({
-//     prompt: [
-//       { text: summarizeYoutubeVideoPrompt(length) },
-//       { media: { url: videoURL, contentType: "video/mp4" } },
-//     ],
-//     output: {
-//       schema: summarizeTranscriptSchema,
-//     },
-//   });
-
-//   return response;
-// }
-
 export const summariseYoutubeVideoFlow = ai.defineFlow(
   {
     name: "summariseYoutubeVideoFlow",
@@ -31,15 +14,16 @@ export const summariseYoutubeVideoFlow = ai.defineFlow(
     outputSchema: summarizeTranscriptSchema,
   },
   async ({ videoURL, length, tone, contentType, additionalPrompt }) => {
+    const prompt = generateYoutubeVideoBlogPrompt(
+      length,
+      tone,
+      contentType,
+      additionalPrompt
+    );
     const response = await ai.generate({
       prompt: [
         {
-          text: generateYoutubeVideoBlogPrompt(
-            length,
-            tone,
-            contentType,
-            additionalPrompt
-          ),
+          text: prompt,
         },
         { media: { url: videoURL, contentType: "video/mp4" } },
       ],

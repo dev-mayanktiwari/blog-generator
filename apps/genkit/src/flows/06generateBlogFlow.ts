@@ -6,7 +6,6 @@ import ai from "../services/ai";
 import { summariseYoutubeVideoFlow } from "./01summariseYoutubeVideoFlow";
 import { generateSearchTermsFlow } from "./02generateSearchTerms";
 import { generateFinalSummaryFlow } from "./04generateFinalSummaryFlow";
-import { onCallGenkit } from "firebase-functions/https";
 import { getSearchTermResultsFlow } from "./03getSearchTermResults";
 import { logger } from "@workspace/utils";
 import { uploadImageToGCS } from "../services/uploadToCloud";
@@ -17,13 +16,23 @@ export const generateBlogFlow = ai.defineFlow(
     name: "generateFullBlogFinalFlow",
     inputSchema: summarizeYoutubeVideoSchema,
   },
-  async ({ videoURL, length, tone, contentType, generateImage }) => {
+  async (
+    { videoURL, length, tone, contentType, generateImage, additionalPrompt },
+    { context }
+  ) => {
+    if (!context?.auth) {
+      throw new Error(
+        "Unauthorized access: No authentication context provided."
+      );
+    }
+
     const summary = await summariseYoutubeVideoFlow({
       videoURL,
       length,
       tone,
       contentType,
       generateImage,
+      additionalPrompt,
     });
     const searchTermsPromise = generateSearchTermsFlow(summary);
 
@@ -50,7 +59,8 @@ export const generateBlogFlow = ai.defineFlow(
     // Wait for post and image (if requested) in parallel
     const [post, image] = await Promise.all([postPromise, imagePromise]);
 
-    const userId = 123;
+    const userId = context.auth.userId;
+
     let imageUrl = null;
 
     logger.info("Processing image generation result", {

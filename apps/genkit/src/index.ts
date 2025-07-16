@@ -1,10 +1,12 @@
 import { AppConfig } from "./config";
 import express, { Application } from "express";
 import { Request, Response } from "express";
-import { generateBlogController } from "./services/controller";
+import { expressHandler } from "@genkit-ai/express";
 import cors from "cors";
 import { logger } from "@workspace/utils";
 import { debugConfiguration } from "./debug-config";
+import { authContext, authMiddleware } from "./services/authMiddlewares";
+import { generateBlogFlow } from "./flows/06generateBlogFlow";
 
 // Create Express app
 const app: Application = express();
@@ -76,7 +78,12 @@ app.get("/flows", (req: Request, res: Response) => {
 });
 
 //@ts-ignore
-app.post("/generate-blog", generateBlogController);
+// app.post("/generate-blog", authMiddleware, generateBlogController);
+app.post(
+  "/generate-blog",
+  authMiddleware,
+  expressHandler(generateBlogFlow, { contextProvider: authContext })
+);
 
 // Start the server
 app.listen(PORT, () => {

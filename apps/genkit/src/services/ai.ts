@@ -10,7 +10,7 @@ const ai = genkit({
       apiKey: String(AppConfig.get("GEMINI_API_KEY")),
     }),
   ],
-  model: googleAI.model("gemini-2.5-pro"),
+  model: googleAI.model("gemini-2.5-pro-preview-03-25"),
 });
 
 // NOT IN USE FOR NOW
