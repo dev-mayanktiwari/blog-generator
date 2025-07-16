@@ -13,6 +13,7 @@ const ai = genkit({
   model: googleAI.model("gemini-2.5-pro"),
 });
 
+// NOT IN USE FOR NOW
 export const imageAi = genkit({
   plugins: [
     vertexAI({
