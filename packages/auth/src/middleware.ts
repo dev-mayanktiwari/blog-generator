@@ -2,7 +2,7 @@ import { ErrorStatusCodes, ResponseMessage } from "@workspace/constants";
 import { AuthenticatedRequest, TokenPayload } from "@workspace/types";
 import { httpError } from "@workspace/utils";
 import { Request, Response, NextFunction } from "express";
-import { JsonWebTokenError, TokenExpiredError, verify } from "jsonwebtoken";
+import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 import { AuthService } from "./auth";
 
 export const authMiddleware = (
