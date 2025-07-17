@@ -1,9 +1,10 @@
 import { Router } from "express";
 import userController from "../controllers/userController";
+import { ipRateLimitter, userRateLimitter } from "../services/rateLimitter";
 
 const userRouter: Router = Router();
 
-userRouter.post("/generate-blog", userController.generatePost);
+userRouter.post("/generate-blog", userRateLimitter, ipRateLimitter, userController.generatePost);
 userRouter.get("/get-user-posts", userController.getUserPosts);
 
 export default userRouter;
