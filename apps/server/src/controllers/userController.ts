@@ -97,6 +97,7 @@ export default {
           {
             title: dbPost.title,
             content: dbPost.content,
+            imageUrl: (safeParse.data.generateImage && post.result?.imageUrl) ? post.imageUrl : null,
           }
         );
       } catch (error) {
