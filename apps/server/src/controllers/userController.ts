@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, response, Response } from "express";
 import { asyncErrorHandler, httpError, httpResponse } from "@workspace/utils";
 import { ErrorStatusCodes, SuccessStatusCodes } from "@workspace/constants";
 import {
@@ -23,36 +23,41 @@ export default {
           safeParse.error.flatten()
         );
       }
+      if (!userId) {
+        return httpError(
+          next,
+          new Error("User ID is missing"),
+          req,
+          ErrorStatusCodes.CLIENT_ERROR.BAD_REQUEST
+        );
+      }
 
       try {
         const response = await fetch(String(AppConfig.get("GENKIT_FLOW_URL")), {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${AppConfig.get("GENKIT_API_KEY")}`,
+            Authorization: `Bearer ${String(AppConfig.get("GENKIT_API_KEY"))}`,
+            "X-User-Id": String(userId),
           },
-          body: JSON.stringify({
-            videoURL: safeParse.data.videoURL,
-            tone: safeParse.data.tone,
-            length: safeParse.data.length,
-            contentType: safeParse.data.contentType,
-            generateImage: safeParse.data.generateImage,
-          }),
+          body: JSON.stringify({ data: safeParse.data }),
         });
-        console.log("Response", response);
-        const post = await response.json();
 
-        console.log("Response from Genkit:", post);
+        console.log("Response", response);
+        // Force post to be any to avoid linter errors on imageUrl
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const post: any = await response.json();
+        const finalPost = post?.result?.post;
+
+        console.log("Response from Genkit:", finalPost);
         //@ts-ignore
         if (
           !response.ok ||
           !post ||
           // @ts-ignore
-          !post.post.title ||
+          !finalPost.title ||
           // @ts-ignore
-          !post.post.content ||
-          // @ts-ignore
-          !post.imageUrl
+          !finalPost.content
         ) {
           // console.log(response.ok);
           console.log("Error", response.status, response);
@@ -68,16 +73,19 @@ export default {
         const postPayload = {
           userId: userId,
           //@ts-ignore
-          title: post.post.title,
+          title: finalPost.title,
           //@ts-ignore
-          content: post.post.content,
+          content: finalPost.content,
           videoUrl: safeParse.data.videoURL,
           tone: safeParse.data.tone,
           length: safeParse.data.length,
           contentType: safeParse.data.contentType,
           generateImage: safeParse.data.generateImage,
           //@ts-ignore
-          imageUrl: post.imageUrl || null,
+          imageUrl:
+            safeParse.data.generateImage && post.result?.imageUrl
+              ? post.imageUrl
+              : null,
         };
 
         const dbPost = await dbServices.addUserPost(postPayload);

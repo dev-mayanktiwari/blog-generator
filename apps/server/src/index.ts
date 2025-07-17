@@ -1,15 +1,22 @@
 import express, { Application, NextFunction, Request, Response } from "express";
 import cors from "cors";
 import helmet from "helmet";
-import { ResponseMessage } from "@workspace/constants";
 import { httpError, logger } from "@workspace/utils";
 import cookieParser from "cookie-parser";
 import { AppConfig } from "./config";
 import healthRouter from "./routes/healthRoutes";
 import globalErrorHandler from "./middlewares/globalErrorHandler";
 import authRouter from "./routes/authRouter";
-import authMiddleware from "./middlewares/authMiddleware";
+import { authMiddleware } from "@workspace/auth";
 import userRouter from "./routes/userRouter";
+import { ApplicationEnvironment, ResponseMessage } from "@workspace/constants";
+
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("Unhandled Rejection:", reason);
+});
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught Exception:", err);
+});
 
 const app: Application = express();
 const PORT = Number(AppConfig.get("PORT")) || 8080;

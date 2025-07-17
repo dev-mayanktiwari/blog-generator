@@ -48,8 +48,8 @@ export default {
         videoUrl,
         length,
         tone,
-        c
         authorId: Number(userId),
+        ...(post.imageUrl !== undefined ? { imageUrl: post.imageUrl } : {}),
       },
     });
   },
