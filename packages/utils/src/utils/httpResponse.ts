@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { THTTPResponse } from "@workspace/types";
-import { ApplicationEnvironment } from "@workspace/constants";
-import { TApplicationEnvironment } from "@workspace/constants";
+import { ApplicationEnvironment } from "../../../constants/src";
+import { TApplicationEnvironment } from "../../../constants/src";
 import { logger } from "./logger";
 
 const httpResponse = (

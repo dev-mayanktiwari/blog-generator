@@ -73,6 +73,7 @@ export const summarizeYoutubeVideoSchema = z.object({
   additionalPrompt: z
     .string()
     .optional()
+    .default("No additional prompt given by the user.")
     .describe("Additional prompt to include in the summary generation."),
 });
 
