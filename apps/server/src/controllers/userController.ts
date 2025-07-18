@@ -7,6 +7,7 @@ import {
 } from "@workspace/types";
 import dbServices from "../services/dbServices";
 import { AppConfig } from "../config";
+import { sampleData } from "../utils/data";
 
 export default {
   generatePost: asyncErrorHandler(
@@ -31,7 +32,6 @@ export default {
           ErrorStatusCodes.CLIENT_ERROR.BAD_REQUEST
         );
       }
-
       try {
         const response = await fetch(String(AppConfig.get("GENKIT_FLOW_URL")), {
           method: "POST",
@@ -42,13 +42,11 @@ export default {
           },
           body: JSON.stringify({ data: safeParse.data }),
         });
-
         console.log("Response", response);
         // Force post to be any to avoid linter errors on imageUrl
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const post: any = await response.json();
         const finalPost = post?.result?.post;
-
         console.log("Response from Genkit:", finalPost);
         //@ts-ignore
         if (
@@ -68,27 +66,33 @@ export default {
             ErrorStatusCodes.CLIENT_ERROR.BAD_REQUEST
           );
         }
-
-        console.log("Generated post:", post);
-        const postPayload = {
-          userId: userId,
-          //@ts-ignore
-          title: finalPost.title,
-          //@ts-ignore
-          content: finalPost.content,
-          videoUrl: safeParse.data.videoURL,
-          tone: safeParse.data.tone,
-          length: safeParse.data.length,
-          contentType: safeParse.data.contentType,
-          generateImage: safeParse.data.generateImage,
-          //@ts-ignore
-          imageUrl:
-            safeParse.data.generateImage && post.result?.imageUrl
-              ? post.imageUrl
-              : null,
-        };
-
-        const dbPost = await dbServices.addUserPost(postPayload);
+        let dbPost;
+        if (safeParse.data.generateImage && post.result?.imageUrl) {
+          const postPayload = {
+            userId: userId,
+            title: finalPost.title,
+            content: finalPost.content,
+            videoUrl: safeParse.data.videoURL,
+            tone: safeParse.data.tone,
+            length: safeParse.data.length,
+            contentType: safeParse.data.contentType,
+            generateImage: true,
+            imageUrl: post?.result?.imageUrl,
+          };
+          dbPost = await dbServices.addUserPostWithEmail(postPayload);
+        } else {
+          const postPayload = {
+            userId: userId,
+            title: finalPost.title,
+            content: finalPost.content,
+            videoUrl: safeParse.data.videoURL,
+            tone: safeParse.data.tone,
+            length: safeParse.data.length,
+            generateImage: false,
+            contentType: safeParse.data.contentType,
+          };
+          dbPost = await dbServices.addUserPostWithoutImage(postPayload);
+        }
         httpResponse(
           req,
           res,
@@ -97,6 +101,7 @@ export default {
           {
             title: dbPost.title,
             content: dbPost.content,
+            imageUrl: post.result?.imageUrl,
           }
         );
       } catch (error) {
@@ -108,6 +113,18 @@ export default {
           ErrorStatusCodes.CLIENT_ERROR.BAD_REQUEST
         );
       }
+    }
+  ),
+
+  dummyGeneration: asyncErrorHandler(
+    async (req: Request, res: Response, next: NextFunction) => {
+      return httpResponse(
+        req,
+        res,
+        SuccessStatusCodes.OK,
+        "Dummy generation successful",
+        sampleData
+      );
     }
   ),
 

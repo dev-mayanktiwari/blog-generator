@@ -20,7 +20,7 @@ export default {
     });
   },
 
-  addUserPost: async (post: {
+  addUserPostWithoutImage: async (post: {
     userId: string;
     title: string;
     content: string;
@@ -29,7 +29,33 @@ export default {
     length: string;
     contentType: string;
     generateImage: boolean;
-    imageUrl?: string | null;
+  }) => {
+    const { userId, title, content, videoUrl, tone, length, contentType } =
+      post;
+    return prisma.post.create({
+      data: {
+        title,
+        content,
+        videoUrl,
+        length,
+        tone,
+        contentType,
+        authorId: Number(userId),
+        generatedImage: false,
+      },
+    });
+  },
+
+  addUserPostWithEmail: async (post: {
+    userId: string;
+    title: string;
+    content: string;
+    videoUrl: string;
+    tone: string;
+    length: string;
+    contentType: string;
+    generateImage: boolean;
+    imageUrl: string;
   }) => {
     const {
       userId,
@@ -39,17 +65,23 @@ export default {
       tone,
       length,
       contentType,
-      generateImage,
+      imageUrl,
     } = post;
     return prisma.post.create({
       data: {
         title,
         content,
         videoUrl,
-        length,
         tone,
+        length,
+        contentType,
         authorId: Number(userId),
-        ...(post.imageUrl !== undefined ? { imageUrl: post.imageUrl } : {}),
+        generatedImage: true,
+        images: {
+          create: {
+            url: imageUrl,
+          },
+        },
       },
     });
   },

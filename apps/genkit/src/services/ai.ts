@@ -10,18 +10,18 @@ const ai = genkit({
       apiKey: String(AppConfig.get("GEMINI_API_KEY")),
     }),
   ],
-  model: googleAI.model("gemini-2.5-pro-preview-03-25"),
+  model: googleAI.model("gemini-2.0-flash-lite"),
 });
 
 // NOT IN USE FOR NOW
-export const imageAi = genkit({
-  plugins: [
-    vertexAI({
-      location: String(AppConfig.get("VERTEX_AI_LOCATION")),
-      projectId: String(AppConfig.get("GOOGLE_CLOUD_PROJECT_ID")),
-    }),
-  ],
-  model: vertexAI.model("imagen-3.0-fast-generate-001"),
-});
+// export const imageAi = genkit({
+//   plugins: [
+//     vertexAI({
+//       location: String(AppConfig.get("VERTEX_AI_LOCATION")),
+//       projectId: String(AppConfig.get("GOOGLE_CLOUD_PROJECT_ID")),
+//     }),
+//   ],
+//   model: vertexAI.model("imagen-3.0-fast-generate-001"),
+// });
 
 export default ai;
