@@ -90,6 +90,13 @@ export default {
     return await prisma.post.findMany({
       where: { authorId: Number(userId) },
       orderBy: { createdAt: "desc" },
+      include: {
+        images: {
+          select: {
+            url: true,
+          },
+        },
+      },
     });
   },
 };

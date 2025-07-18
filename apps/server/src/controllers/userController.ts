@@ -110,7 +110,13 @@ export default {
           next,
           new Error("Failed to generate post"),
           req,
-          ErrorStatusCodes.CLIENT_ERROR.BAD_REQUEST
+          ErrorStatusCodes.CLIENT_ERROR.BAD_REQUEST,
+          {
+            error:
+              error instanceof Error
+                ? error.message
+                : "Failed to generate post. Please try again.",
+          }
         );
       }
     }
@@ -157,7 +163,13 @@ export default {
           next,
           new Error("Failed to fetch user posts"),
           req,
-          ErrorStatusCodes.SERVER_ERROR.INTERNAL_SERVER_ERROR
+          ErrorStatusCodes.SERVER_ERROR.INTERNAL_SERVER_ERROR,
+          {
+            error:
+              error instanceof Error
+                ? error.message
+                : "Failed to fetch user posts. Please try again.",
+          }
         );
       }
     }
