@@ -45,7 +45,7 @@ export const HeroSection = () => {
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
-            <Link href="/login">
+            {/* <Link href="/login">
               <Button
                 variant="outline"
                 size="lg"
@@ -53,7 +53,7 @@ export const HeroSection = () => {
               >
                 Sign In
               </Button>
-            </Link>
+            </Link> */}
           </div>
 
           {/* Trust Indicators */}
