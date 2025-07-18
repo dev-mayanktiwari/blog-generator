@@ -10,7 +10,7 @@ const ai = genkit({
       apiKey: String(AppConfig.get("GEMINI_API_KEY")),
     }),
   ],
-  model: googleAI.model("gemini-2.0-flash-lite"),
+  model: googleAI.model(String(AppConfig.get("GEMINI_MODEL"))),
 });
 
 // NOT IN USE FOR NOW

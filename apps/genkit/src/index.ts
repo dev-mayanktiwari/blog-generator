@@ -97,5 +97,5 @@ app.listen(PORT, () => {
   });
 
   // Debug configuration on startup
-  debugConfiguration();
+  // debugConfiguration();
 });

@@ -12,7 +12,8 @@ type ConfigKeys =
   | "GCS_BUCKET_NAME"
   | "GOOGLE_CLOUD_PROJECT_ID"
   | "GOOGLE_APPLICATION_CREDENTIALS"
-  | "VERTEX_AI_LOCATION";
+  | "VERTEX_AI_LOCATION"
+  | "GEMINI_MODEL";
 
 const _config: Record<ConfigKeys, string | undefined> = {
   NODE_ENV: process.env.NODE_ENV,
@@ -27,6 +28,7 @@ const _config: Record<ConfigKeys, string | undefined> = {
     process.env.GOOGLE_CLOUD_PROJECT_ID || "genkit-project",
   GOOGLE_APPLICATION_CREDENTIALS: process.env.GOOGLE_APPLICATION_CREDENTIALS,
   VERTEX_AI_LOCATION: process.env.VERTEX_AI_LOCATION || "us-central1",
+  GEMINI_MODEL: process.env.GEMINI_MODEL || "gemini-2.0-flash-lite",
 };
 
 export const AppConfig = {

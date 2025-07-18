@@ -1,8 +1,5 @@
 import { Request, Response } from "express";
-import {
-  AuthenticatedGenkitRequest,
-  summarizeYoutubeVideoSchema,
-} from "@workspace/types";
+import { summarizeYoutubeVideoSchema } from "@workspace/types";
 import { generateBlogFlow } from "../flows/06generateBlogFlow";
 import { logger } from "@workspace/utils";
 
@@ -14,8 +11,6 @@ export const generateBlogController = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Invalid input data" });
     }
 
-    const userId = (req as AuthenticatedGenkitRequest).userId;
-
     const result = await generateBlogFlow(safeParse.data);
     res.status(200).json(result);
   } catch (error) {
@@ -25,6 +20,6 @@ export const generateBlogController = async (req: Request, res: Response) => {
         error,
       },
     });
-    res.status(500).json({ error: "Failed to generate blog" });
+    res.status(500).json({ error: "Failed to generate blog", cause: error });
   }
 };
