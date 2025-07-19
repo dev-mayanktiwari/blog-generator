@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "@workspace/ui/globals.css";
 import { AuthProvider, Providers } from "@/components/providers";
 import { Toaster } from "@workspace/ui/components/sonner";
+import { Analytics } from "@vercel/analytics/next";
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -27,6 +28,7 @@ export default function RootLayout({
         <Providers>
           <AuthProvider>
             {children}
+            <Analytics />
             <Toaster />
           </AuthProvider>
         </Providers>
