@@ -34,6 +34,7 @@ app.use(
         const allowedOrigins = [
           "https://blogai.mayanktiwari.tech",
           "https://blogai-opal.vercel.app",
+          "https://blogai-git-localsearchfeautre-mayankiwarimt-gmailcoms-projects.vercel.app/",
         ];
 
         if (!origin || allowedOrigins.includes(origin)) {
