@@ -19,7 +19,7 @@ model User {
   email        String       @unique
   name         String?
   posts        Post[]
-  registerType registerType @default(EMAIL)
+  registerType RegisterType @default(EMAIL)
   password     String?
   mediumId     String?      @unique
   mediumToken  String?
@@ -27,19 +27,48 @@ model User {
 }
 
 model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String
-  videoUrl  String
-  length    String
-  tone      String
-  published Boolean @default(false)
-  authorId  Int
-  author    User    @relation(fields: [authorId], references: [id])
-  createdAt DateTime @default(now())
+  id             Int         @id @default(autoincrement())
+  title          String
+  content        String
+  videoUrl       String
+  length         String
+  tone           String
+  contentType    String      @default("informative")
+  generatedImage Boolean     @default(false)
+  published      Boolean     @default(false)
+  authorId       Int
+  author         User        @relation(fields: [authorId], references: [id])
+  images         PostImage[]
+  createdAt      DateTime    @default(now())
 }
 
-enum registerType {
+model PostImage {
+  id     Int    @id @default(autoincrement())
+  postId Int
+  url    String
+  post   Post   @relation(fields: [postId], references: [id])
+}
+
+enum RegisterType {
   EMAIL
   GOOGLE
+}
+
+enum ContentType {
+  informative
+  tutorial
+  opinion
+  summary
+  narrative
+}
+
+enum Tone {
+  conversational
+  professional
+  formal
+  casual
+  engaging
+  persuasive
+  expository
+  neutral
 }

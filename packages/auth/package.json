@@ -1,0 +1,19 @@
+{
+  "name": "@workspace/auth",
+  "version": "0.0.0",
+  "dependencies": {
+    "@workspace/constants": "workspace:*",
+    "@workspace/types": "workspace:*",
+    "@workspace/utils": "workspace:*",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.9"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}

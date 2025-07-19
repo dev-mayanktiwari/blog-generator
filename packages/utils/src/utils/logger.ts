@@ -9,7 +9,7 @@ import {
 } from "winston/lib/winston/transports";
 import { createLogger, transports, format } from "winston";
 import { MongoDBTransportInstance } from "winston-mongodb";
-import { ApplicationEnvironment } from "@workspace/constants";
+import { ApplicationEnvironment } from "../../../constants/src";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -98,7 +98,10 @@ const mongoTransport = (): Array<MongoDBTransportInstance> => {
 const fileTransport = (): Array<FileTransportInstance> => {
   return [
     new transports.File({
-      filename: path.join(__dirname, `../../../logs/${process.env.NODE_ENV}.log`),
+      filename: path.join(
+        __dirname,
+        `../../../logs/${process.env.NODE_ENV}.log`
+      ),
       level: "info",
       format: format.combine(format.timestamp(), fileLogFormat),
     }),

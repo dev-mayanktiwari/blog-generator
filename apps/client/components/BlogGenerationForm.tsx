@@ -20,21 +20,15 @@ import {
 } from "@workspace/ui/components/select";
 import { Switch } from "@workspace/ui/components/switch";
 import { Youtube, Zap, Image, Sparkles, AlertCircle } from "lucide-react";
-
-type LengthType = "short" | "medium" | "long";
-type ToneType =
-  | "formal"
-  | "informal"
-  | "neutral"
-  | "professional"
-  | "conversational";
+import {
+  TSummarizeYoutubeVideoSchema,
+  TSummaryContentTypeSchema,
+  TSummaryToneSchema,
+  TSummaryLengthSchema,
+} from "@workspace/types";
 
 interface BlogGenerationFormProps {
-  onSubmit: (data: {
-    videoUrl: string;
-    length: LengthType;
-    tone: ToneType;
-  }) => void;
+  onSubmit: (data: TSummarizeYoutubeVideoSchema) => void;
   loading: boolean;
   error: string | null;
 }
@@ -44,14 +38,20 @@ export const BlogGenerationForm = ({
   loading,
   error,
 }: BlogGenerationFormProps) => {
-  const [videoUrl, setVideoUrl] = useState("");
-  const [length, setLength] = useState<LengthType | "">("");
-  const [tone, setTone] = useState<ToneType | "">("");
-  const [generateImages, setGenerateImages] = useState(false);
+  const [videoURL, setVideoURL] =
+    useState<TSummarizeYoutubeVideoSchema["videoURL"]>("");
+  const [length, setLength] = useState<TSummaryLengthSchema | "">("");
+  const [tone, setTone] = useState<TSummaryToneSchema | "">("");
+  const [contentType, setContentType] = useState<
+    TSummaryContentTypeSchema | ""
+  >("");
+  const [generateImage, setGenerateImage] =
+    useState<TSummarizeYoutubeVideoSchema["generateImage"]>(false);
+  const [additionalPrompt, setAdditionalPrompt] =
+    useState<TSummarizeYoutubeVideoSchema["additionalPrompt"]>("");
 
   const validateYouTubeUrl = (url: string) => {
     if (!url || typeof url !== "string") return false;
-
     const patterns = [
       /^https?:\/\/(www\.)?youtube\.com\/watch\?v=[\w-]+/,
       /^https?:\/\/youtu\.be\/[\w-]+/,
@@ -62,19 +62,19 @@ export const BlogGenerationForm = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!videoUrl?.trim() || !length || !tone) {
+    if (!videoURL?.trim() || !length || !tone || !contentType) {
       return;
     }
-
-    if (!validateYouTubeUrl(videoUrl)) {
+    if (!validateYouTubeUrl(videoURL)) {
       return;
     }
-
     onSubmit({
-      videoUrl: videoUrl.trim(),
-      length: length as LengthType,
-      tone: tone as ToneType,
+      videoURL: videoURL.trim(),
+      length: length as TSummaryLengthSchema,
+      tone: tone as TSummaryToneSchema,
+      contentType: contentType as TSummaryContentTypeSchema,
+      generateImage,
+      additionalPrompt: additionalPrompt.trim(),
     });
   };
 
@@ -134,8 +134,8 @@ export const BlogGenerationForm = ({
                   id="videoUrl"
                   type="url"
                   placeholder="https://www.youtube.com/watch?v=..."
-                  value={videoUrl}
-                  onChange={(e) => setVideoUrl(e.target.value)}
+                  value={videoURL}
+                  onChange={(e) => setVideoURL(e.target.value)}
                   className="pl-12 h-12 text-base border-2 focus:border-purple-500 transition-all duration-200"
                   required
                 />
@@ -150,7 +150,7 @@ export const BlogGenerationForm = ({
                 </Label>
                 <Select
                   value={length}
-                  onValueChange={(v) => setLength(v as LengthType)}
+                  onValueChange={(v) => setLength(v as TSummaryLengthSchema)}
                   required
                 >
                   <SelectTrigger className="h-12 text-base border-2">
@@ -174,7 +174,7 @@ export const BlogGenerationForm = ({
                 </Label>
                 <Select
                   value={tone}
-                  onValueChange={(v) => setTone(v as ToneType)}
+                  onValueChange={(v) => setTone(v as TSummaryToneSchema)}
                   required
                 >
                   <SelectTrigger className="h-12 text-base border-2">
@@ -187,10 +187,40 @@ export const BlogGenerationForm = ({
                     <SelectItem value="professional">
                       👔 Professional
                     </SelectItem>
+                    <SelectItem value="formal">📝 Formal</SelectItem>
+                    <SelectItem value="casual">😎 Casual</SelectItem>
+                    <SelectItem value="engaging">🔥 Engaging</SelectItem>
+                    <SelectItem value="persuasive">🗣️ Persuasive</SelectItem>
+                    <SelectItem value="expository">📚 Expository</SelectItem>
                     <SelectItem value="neutral">⚖️ Neutral</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
+            </div>
+
+            {/* Content Type Dropdown */}
+            <div className="space-y-3">
+              <Label htmlFor="contentType" className="text-base font-semibold">
+                Content Type *
+              </Label>
+              <Select
+                value={contentType}
+                onValueChange={(v) =>
+                  setContentType(v as TSummaryContentTypeSchema)
+                }
+                required
+              >
+                <SelectTrigger className="h-12 text-base border-2">
+                  <SelectValue placeholder="Choose content type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="informative">ℹ️ Informative</SelectItem>
+                  <SelectItem value="tutorial">🎓 Tutorial</SelectItem>
+                  <SelectItem value="opinion">💡 Opinion</SelectItem>
+                  <SelectItem value="summary">📝 Summary</SelectItem>
+                  <SelectItem value="narrative">📖 Narrative</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             {/* Advanced Options */}
@@ -200,7 +230,7 @@ export const BlogGenerationForm = ({
                 Advanced Options
               </h4>
 
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-3">
                   <Image className="w-5 h-5 text-blue-500" />
                   <div>
@@ -214,16 +244,30 @@ export const BlogGenerationForm = ({
                       Add relevant images to your blog post
                     </p>
                   </div>
-                  <span className="text-xs px-3 py-1 bg-yellow-200 dark:bg-yellow-800/50 text-yellow-800 dark:text-yellow-200 rounded-full font-medium">
-                    Coming Soon
-                  </span>
                 </div>
                 <Switch
                   id="generate-images"
-                  checked={generateImages}
-                  onCheckedChange={setGenerateImages}
-                  disabled
-                  className="opacity-50"
+                  checked={generateImage}
+                  onCheckedChange={setGenerateImage}
+                  className=""
+                />
+              </div>
+
+              {/* Additional Prompt */}
+              <div className="space-y-2">
+                <Label
+                  htmlFor="additionalPrompt"
+                  className="text-base font-medium"
+                >
+                  Additional Prompt
+                </Label>
+                <Input
+                  id="additionalPrompt"
+                  type="text"
+                  placeholder="Any extra instructions for the AI (optional)"
+                  value={additionalPrompt}
+                  onChange={(e) => setAdditionalPrompt(e.target.value)}
+                  className="h-12 text-base border-2 focus:border-purple-500 transition-all duration-200"
                 />
               </div>
             </div>
@@ -232,7 +276,9 @@ export const BlogGenerationForm = ({
             <Button
               type="submit"
               className="w-full h-14 text-lg bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 shadow-lg hover:shadow-xl transition-all duration-200"
-              disabled={loading || !videoUrl.trim() || !length || !tone}
+              disabled={
+                loading || !videoURL.trim() || !length || !tone || !contentType
+              }
             >
               <Zap className="mr-3 h-6 w-6" />
               Generate Blog Post

@@ -1,3 +1,4 @@
+import { logger } from "@workspace/utils";
 import { generateSearchTermsPrompt } from "../prompts";
 import ai from "../services/ai";
 import { searchTermsSchema, summarizeTranscriptSchema } from "@workspace/types";
@@ -43,6 +44,12 @@ export const generateSearchTermsFlow = ai.defineFlow(
         "AI response does not contain valid 'searchTerms' array."
       );
     }
+
+    logger.info("Flow Two - Search Terms generated successfully.", {
+      meta: {
+        searchTerms: parsed.searchTerms,
+      },
+    });
 
     return {
       searchTerms: parsed.searchTerms,

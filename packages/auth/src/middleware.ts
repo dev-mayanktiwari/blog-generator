@@ -2,10 +2,14 @@ import { ErrorStatusCodes, ResponseMessage } from "@workspace/constants";
 import { AuthenticatedRequest, TokenPayload } from "@workspace/types";
 import { httpError } from "@workspace/utils";
 import { Request, Response, NextFunction } from "express";
-import { JsonWebTokenError, TokenExpiredError, verify } from "jsonwebtoken";
-import { AppConfig } from "../config";
+import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
+import { AuthService } from "./auth";
 
-const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+export const authMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const token = req.cookies.authToken;
   // console.log("Auth token from cookies:", token);
   const request = req as AuthenticatedRequest;
@@ -30,10 +34,7 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   }
 
   try {
-    const decodedToken = verify(
-      tokenValue,
-      String(AppConfig.get("JWT_SECRET"))
-    ) as TokenPayload;
+    const decodedToken = AuthService.decode(tokenValue) as TokenPayload;
 
     const user = {
       id: decodedToken.id,

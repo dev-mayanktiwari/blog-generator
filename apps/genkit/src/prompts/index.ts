@@ -1,6 +1,8 @@
 import {
+  TAdditionalPromptSchema,
   TGenerateBlogSchema,
   TSearchTermsSchema,
+  TSummaryContentTypeSchema,
   TSummaryLengthSchema,
   TSummaryToneSchema,
 } from "@workspace/types";
@@ -19,68 +21,78 @@ export function summarizeTranscriptPrompt(
 
 export function generateYoutubeVideoBlogPrompt(
   length: TSummaryLengthSchema,
-  tone: TSummaryToneSchema
+  tone: TSummaryToneSchema,
+  contentType: TSummaryContentTypeSchema,
+  additionalPrompt: TAdditionalPromptSchema
 ): string {
   return `
-      You are an expert content creator and storyteller, skilled at transforming video content into engaging, human-like, first-person blog posts that are enjoyable to read and naturally flow.
-  
-      🎯 **Your task is to generate a JSON object as output, strictly following this format**:
-      {
-        "summary": "<complete blog text here>"
-      }
-  
-      🎯 **Important Instructions for Writing the Blog**:
-  
-      1. The output "summary" must be a **valid JSON string**:
-         - No broken or illegal string concatenations such as \`' + '\`.
-         - No unescaped line breaks or illegal JSON characters.
-         - Use \\n for new lines if needed.
-  
-      2. Instead of summarizing the video, you are required to **write a full-fledged blog post based on the YouTube video**. This blog post will be read by real people — not machines. It must:
-         - Be written entirely in **first person**, as if you (the writer) experienced or are explaining the topic yourself.
-         - NOT refer to the YouTuber or say phrases like "The YouTuber explains" or "In this video...". Instead, act as if you are telling the story or sharing the knowledge directly.
-  
-      3. The blog post must follow all principles of a **great, hooking, non-boring blog**:
-         - Start with a **strong hook** to immediately catch the reader's interest — a surprising fact, personal thought, question, or curiosity.
-         - Maintain a **friendly, conversational, or professional tone** based on the "tone" parameter provided.
-         - Avoid sounding like an AI or machine. The blog must feel like a human wrote it with thoughts, opinions, and natural flow.
-         - Include personal touches, reflections, or interesting observations to make the post relatable and unique.
-         - Keep the reader curious — make them want to read the next sentence.
-  
-      4. The blog **must smoothly integrate main points, examples, ideas, and arguments** from the video — not as bullet points or mechanical listings but as part of a flowing story or explanation.
-  
-      5. The blog should be **complete and stand-alone** — understandable without watching the video or needing the transcript.
-  
-      6. **Length Requirement Based on "length" parameter**:
-         - "short": Around 250-400 words (~2-3 meaningful paragraphs).
-         - "medium": Around 500-800 words (~4-6 detailed paragraphs).
-         - "long": 900+ words (at least 4 in-depth paragraphs covering major and minor points comprehensively).
-  
-      7. **Tone Requirement** based on "tone" parameter:
-         - "formal", "informal", "neutral", "professional", or "conversational". Your word choices, sentence structure, and attitude should reflect this.
-  
-      8. The blog must be **well-structured**:
-         - Have a clear **beginning (hook/introduction)**, **middle (main content)**, and **end (conclusion/closing thoughts)**.
-         - Transitions between paragraphs should be smooth and logical.
-  
-      9. Be cautious to:
-          - Avoid generic or filler content.
-          - Avoid phrases like "As an AI model" or "According to the video" — the reader must feel you are the one sharing this experience or knowledge.
-  
-      🔍 **Inputs Provided**:
-      - Length: ${length}  (short | medium | long)
-      - Tone: ${tone}  (formal | informal | neutral | professional | conversational)
+You are a skilled content creator and storyteller, capable of transforming YouTube video content into engaging, human-like blog posts that flow naturally and resonate with readers.
 
-      Make SURE to generate a ${length} blog post that is engaging, insightful, and feels like a real person wrote it, not a machine. The blog should be informative, enjoyable, and leave the reader wanting to learn more or reflect on the topic. The length of text must be as per the the given length parameter, and the tone must match the given tone parameter.
+📘 **Blog Type**: "${contentType}" (e.g., informative, tutorial, opinion, summary, narrative)  
+🗣️ **Tone**: "${tone}"  
+✏️ **Length**: "${length}" (short ≈ 250–400 words, medium ≈ 500–800, long = 900+)
 
+---
 
-      Generate a ${length} blog in ${tone}.
+🧩 **Additional Prompt from User**:
+"${additionalPrompt}"
 
-      🔍 **Output Format (Must strictly follow)**:
-      {
-        "summary": "<entire first-person blog text here>"
-      }
-    `.trim();
+> ⚠️ This is **important guidance** from the user. Be sure to **honor this request** and incorporate it meaningfully into the blog post. Interpret it with care and apply it to the tone, focus, examples, or structure of your writing.
+
+---
+
+🎯 **Your Goal**:  
+Write a **complete, human-written blog post**, not a robotic summary. The blog must sound like a real person who deeply understands the topic and is communicating naturally.
+
+📐 **Strict Word Count Compliance**:
+✅ You **must strictly meet the target length** (${length}):
+- Do **not** end early.
+- If the content feels too short, **expand with examples, analogies, or deeper explanation**.
+- Elaborate naturally — add context, observations, or transitions to increase depth without padding.
+
+🧠 **Voice & Perspective Strategy**:
+Use a **balanced, human tone** — just like real blogs. The perspective should feel organic:
+- Use **first-person (“I”, “my”)** when reflecting, sharing experiences, or giving opinions.
+- Use **second-person (“you”)** to guide or instruct the reader, especially in tutorials or persuasive content.
+- Use a **neutral or general tone** when discussing facts, trends, or universal insights.
+- Create a balance accordingly.
+
+✨ For example:
+- In a tutorial: explain steps using "you", while occasionally bringing in personal tips ("I usually do this...")
+- In a review or opinion: lean on "I" to express genuine experience or judgment.
+- In informative or environmental blogs: use mostly general/third-person, but add personal touches for relatability.
+
+---
+
+📋 **Structure Instructions**:
+- Start with a strong **hook** — a relatable idea, question, or insight.
+- Develop a logical flow — avoid robotic listing or dry information dumps.
+- End with a thoughtful conclusion, takeaway, or subtle call to action (if suitable).
+
+✍️ **Content Rules**:
+- Integrate key points from the video **naturally** — don’t just rephrase or list them.
+- Avoid fluff. Add value through storytelling, reflection, clarity, or depth.
+- Use transitions that keep the reader engaged.
+- Match the writing tone and structure to the blog type:
+  - Tutorial → Clear, structured, friendly
+  - Review → Honest, reflective, opinionated
+  - Informative → Clear, structured, and fact-based
+  - Opinion → Persuasive, passionate, reasoned
+
+🚫 **Do Not**:
+- Mention “the video”, “YouTuber”, or “this video says”.
+- Sound like a machine or AI.
+- End prematurely. Always hit the minimum word requirement for "${length}".
+
+---
+
+📦 **Output Format (Must be valid JSON)**:
+{
+  "summary": "<entire blog post here>"
+}
+
+Now, generate a high-quality, ${length}-length blog in a ${tone} tone based on a "${contentType}" format. Keep the writing natural and insightful. Strictly meet the required length by thoughtfully expanding the content where necessary.
+`.trim();
 }
 
 export function generateSearchTermsPrompt(summary: string) {
@@ -167,115 +179,118 @@ export function generateSearchTermsResultsPrompt(
     `;
 }
 
-export function generateBlogPrompt(payload: TGenerateBlogSchema): string {
-  console.log("Payload for generateBlogPrompt:", payload);
+export function enhanceBlogWithSearchResultsPrompt(
+  payload: TGenerateBlogSchema
+): string {
   return `
-      You are an expert human-like blog writer, capable of crafting highly engaging, natural-feeling, and thoughtfully written blogs that captivate readers from beginning to end.
-  
-      ---
-  
-      ### 🎯 Your Task:
-  
-      Using the provided **summary**, **search results**, and **key terms**, generate a complete, high-quality blog post that:
-      - Matches the requested **${payload.length} length** and falls within the required word range.
-      - Maintains the requested **${payload.tone} tone** consistently across the blog.
-      - Feels as if written by a real human — **never robotic, machine-like, or repetitive**.
-      - Is rich in explanation, insight, personal touch, and clarity.
-      - Smoothly integrates relevant information from search results **to meet the required length and depth without forcing unrelated facts**.
-  
-      ---
-  
-      ### 🔍 Inputs:
-  
-      1. **Summary**:
-      \`\`\`
-      ${payload.summary}
-      \`\`\`
-  
-      2. **Search Results** (additional enriching details):
-      \`\`\`json
-      {
-        "term1": "Detailed information or fact related to term1",
-        "term2": "Detailed information or fact related to term2",
-        "term3": "Detailed information or fact related to term3"
-      }
-      \`\`\`
-      ${payload.searchTermResults}
-  
-      3. **Terms Array**:
-      \`\`\`json
-      [${payload.searchTerms.map((term) => `"${term}"`).join(", ")}]
-      \`\`\`
-  
-      ---
-  
-      ### 📝 **Strict Writing Guidelines (Mandatory):**
-  
-      1. **Title:**
-         - Write a catchy, original title related to the main idea — avoid bland or mechanical phrasing.
-  
-      2. **Introduction:**
-         - Begin with a strong **hook** (personal thought, surprising fact, relatable situation, etc.).
-         - Introduce the main theme naturally.
-  
-      3. **Body:**
-         - Fully expand on the key points in the summary.
-         - Seamlessly include additional details from **search results when necessary to meet the required word count** — but only if they naturally enhance the topic and do not feel forced.
-         - Provide clear explanations, thoughtful insights, relatable examples, or personal reflections to **keep the content rich and alive**.
-         - Maintain smooth transitions — no abrupt jumps.
-  
-      4. **Conclusion:**
-         - Conclude with a meaningful insight, takeaway, or call-to-action.
-         - Ensure the ending feels complete, not abrupt or mechanical.
-  
-      ---
-  
-      ### 📏 **Length Enforcement (Based on "${payload.length}")**:
-  
-      - **Short**: 250–400 words (~2-3 solid, meaningful paragraphs).
-      - **Medium**: 500–800 words (~4-6 detailed paragraphs).
-      - **Long**: 900+ words (at least **5 detailed, well-developed paragraphs** — introduction, body, and conclusion — covering all major and minor points).
-  
-      ⚠️ **If the provided summary is too brief to meet the required length:**
-      - Thoughtfully expand the content using only **relevant and useful information** from the search results.
-      - Enrich explanations, provide deeper insights, examples, or reflections — but **do NOT include irrelevant or off-topic details**.
-      - The content must stay focused, natural, and engaging — avoid filler or repetition.
-  
-      ---
-  
-      ### 🎨 **Tone & Style (Strict Requirement — ${payload.tone}):**
-  
-      - Maintain a consistent **${payload.tone} tone**:
-        - Conversational: Friendly, relatable, informal.
-        - Formal: Professional, respectful, serious.
-        - Neutral: Clear, factual, objective.
-        - Informal: Casual, humorous, relaxed.
-        - Professional: Industry-appropriate, confident, precise.
-  
-      - Avoid robotic patterns, obvious AI phrases, or unnatural wordings.
-  
-      ---
-  
-      ### ✅ **Final Quality Checklist (Before Generating Output):**
-  
-      - Is the blog within the **correct word range for ${payload.length}**?
-      - Does it smoothly blend search results without forcing or overloading?
-      - Does the tone match **${payload.tone}** consistently?
-      - Is the structure complete (hook → body → conclusion)?
-      - Does the post feel human, thoughtful, and enjoyable — NOT AI-like?
-      - Is every part of the blog relevant, useful, and engaging?
-  
-      ---
-  
-      ### 🚫 **Do NOT Do**:
-  
-      - Do NOT copy or rephrase the summary verbatim — enrich and elaborate naturally.
-      - Do NOT inject unrelated facts from search results.
-      - Do NOT mention "summary", "video", "search terms", or "AI".
-      - Do NOT produce filler or mechanically expanded content.
-  
-      ---
-  
-      🎯 **Think, write, and create like an expert human blogger. Your goal: a blog post that readers enjoy, trust, and learn from — not something that feels artificial or incomplete.**
-    `;
+You are a senior blog editor with expertise in elevating good content into great content.
+
+You have already been provided with a **well-written base blog post** generated from a YouTube video. Your job is to now **enhance and refine this blog**, using carefully curated **search results for key terms**, in order to:
+- Add contextual depth
+- Improve clarity and credibility
+- Meet the required word count
+- Deliver a richer, more informative and engaging final piece
+
+---
+
+🎯 **Your Task**:
+
+Without rewriting or replacing the blog, **carefully revise and enrich it** using only the provided search result insights. Treat the original blog as your foundation — maintain its core tone, structure, and flow — and elevate it with additional facts, elaborations, or clarifications.
+
+---
+
+📦 **Inputs Provided**:
+
+1. **Base Blog**:
+\`\`\`
+${payload.summary}
+\`\`\`
+
+2. **Search Result Insights**:
+\`\`\`json
+${payload.searchTermResults}
+\`\`\`
+
+3. **Terms Extracted for Enrichment**:
+\`\`\`json
+[${payload.searchTerms.map((term) => `"${term}"`).join(", ")}]
+\`\`\`
+
+---
+
+🧠 **What to Do**:
+
+- **Carefully read the blog** and look for areas where ideas could be expanded, explained better, or backed by relevant facts.
+- **Integrate** search result insights only where they feel **naturally helpful and connected** to what’s being discussed.
+- Expand short sections with richer context, relatable analogies, examples, or supporting facts.
+- Ensure the final blog continues to feel human, insightful, and true to its original tone.
+
+---
+
+📏 **Length Enforcement (Strict)**:
+- **Short**: 250–400 words
+- **Medium**: 500–800 words
+- **Long**: 900+ words (must be deeply detailed and well-structured)
+
+If the base blog is not long enough:
+- Thoughtfully **expand** with additional insight from the search results.
+- Add narrative depth — but **no fluff, no repetition**.
+- Prioritize clarity and helpfulness.
+
+---
+
+📝 **Writing Guidelines**:
+
+- Do not remove or rewrite the original content unless necessary to improve flow or clarity.
+- **Preserve the blog's original tone**: ${payload.tone}
+- Keep structure aligned to the original **content type**: ${payload.contentType}
+- Ensure smooth transitions when inserting new insights.
+- Maintain natural, reader-friendly pacing.
+
+---
+
+🚫 **Avoid the Following**:
+
+- Do NOT say "search results", "terms", "video", or "summary".
+- Do NOT overload the post with unrelated or excessive facts.
+- Do NOT rewrite the whole blog from scratch.
+- Do NOT break the JSON format in the output.
+
+---
+
+✅ **Final Output Format (Strict JSON)**:
+
+{
+  "summary": "<final enhanced blog here>"
+}
+
+
+---
+
+🎯 Final Mission:
+> You are here to take a well-written blog and make it **more valuable, more complete, and more insightful** — without losing its human tone or narrative flow.
+
+Think like a human editor working for a top publication. The final result should feel like a **fully polished, high-quality blog** that educates, connects, and satisfies the reader — all while subtly incorporating new depth.
+  `.trim();
+}
+
+export function generateImagePrompt(summary: string): string {
+  return `
+      You are generating a blog illustration using summary. You are a professional image generation agent. The blog is based on a YouTube video and is intended for readers of a specific type. The image you generate will be placed at the top of the blog post, so it should visually represent the theme, message, and emotional tone of the content. It should align with the writing style, reader profile, and content type. Use the full context below to create a coherent, visually appealing image that enhances the blog's storytelling and message.
+      
+      Here are the details you need to consider:
+
+      - **Summary**: ${summary}
+
+      🎨 Visual Instructions:
+	      •	Focus on the central themes mentioned in the summary.
+	      •	The style should be appropriate for a blog header image. Avoid overly detailed or complex scenes.
+	      •	Preferably no text in the image unless absolutely necessary.
+	      •	Use symbols or metaphors relevant to the topic (e.g., brain and circuits for AI, trees and globe for sustainability, etc.).
+	      •	Ensure the image is clean, aesthetic, and mobile-friendly.
+
+    ⸻
+
+        🖼️ Image Format: Horizontal blog banner, 1200x600px.
+`;
 }

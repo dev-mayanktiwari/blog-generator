@@ -28,6 +28,8 @@ interface GeneratedPost {
   length: string;
   tone: string;
   status?: string;
+  generateImage?: boolean;
+  imageUrl?: string;
 }
 
 interface GeneratedPostDisplayProps {
@@ -42,7 +44,7 @@ export const GeneratedPostDisplay = ({
   publishingToMedium,
 }: GeneratedPostDisplayProps) => {
   const postRef = useRef<HTMLDivElement>(null);
-
+  console.log("Generated Post:", post);
   useEffect(() => {
     // Show scroll prompt and auto-scroll to the generated post
     const timer = setTimeout(() => {
@@ -132,6 +134,16 @@ export const GeneratedPostDisplay = ({
             {/* Post Content */}
             <div className="prose dark:prose-invert max-w-none">
               <div className="border rounded-xl p-8 bg-gradient-to-br from-gray-50 to-white dark:from-gray-900/50 dark:to-gray-800/50 shadow-inner">
+                {post.imageUrl && (
+                  <div className="flex justify-center mb-6">
+                    <img
+                      src={post.imageUrl}
+                      alt="Generated visual for blog post"
+                      className="rounded-xl shadow-lg max-w-full h-auto"
+                      style={{ maxHeight: 400 }}
+                    />
+                  </div>
+                )}
                 <ReactMarkdown
                   components={{
                     h1: ({ children }) => (

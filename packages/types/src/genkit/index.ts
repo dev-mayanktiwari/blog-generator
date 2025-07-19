@@ -1,7 +1,27 @@
 import { z } from "zod";
 
+export const summaryContentTypeSchema = z
+  .enum(["informative", "tutorial", "opinion", "summary", "narrative"])
+  .optional()
+  .default("informative")
+  .describe("The content type of the video.");
+
+export const additionalPromptSchema = z
+  .string()
+  .optional()
+  .describe("Additional prompt to include in the summary generation.");
+
 export const summaryToneSchema = z
-  .enum(["formal", "informal", "neutral", "professional", "conversational"])
+  .enum([
+    "conversational",
+    "professional",
+    "formal",
+    "casual",
+    "engaging",
+    "persuasive",
+    "expository",
+    "neutral",
+  ])
   .optional()
   .default("neutral")
   .describe("The tone of the summary.");
@@ -26,11 +46,35 @@ export const summarizeYoutubeVideoSchema = z.object({
     .optional()
     .default("medium")
     .describe("The length of the summary."),
+  generateImage: z
+    .boolean()
+    .optional()
+    .default(false)
+    .describe("Generate an image for the blog."),
+  contentType: z
+    .enum(["informative", "tutorial", "opinion", "summary", "narrative"])
+    .optional()
+    .default("informative")
+    .describe("The content type of the video."),
   tone: z
-    .enum(["formal", "informal", "neutral", "professional", "conversational"])
+    .enum([
+      "conversational",
+      "professional",
+      "formal",
+      "casual",
+      "engaging",
+      "persuasive",
+      "expository",
+      "neutral",
+    ])
     .optional()
     .default("neutral")
     .describe("The tone of the summary."),
+  additionalPrompt: z
+    .string()
+    .optional()
+    .default("No additional prompt given by the user.")
+    .describe("Additional prompt to include in the summary generation."),
 });
 
 export const searchTermsSchema = z.object({
@@ -59,6 +103,8 @@ export const generateBlogSchema = z.object({
   }),
   length: summaryLengthSchema,
   tone: summaryToneSchema,
+  contentType: summaryContentTypeSchema,
+  additionalPrompt: additionalPromptSchema.optional(),
 });
 
 export const finalPostSchema = z.object({
@@ -89,3 +135,7 @@ export type TSummaryLengthSchema = z.infer<typeof summaryLengthSchema>;
 export type TSummarizeYoutubeVideoSchema = z.infer<
   typeof summarizeYoutubeVideoSchema
 >;
+export type TSummaryContentTypeSchema = z.infer<
+  typeof summaryContentTypeSchema
+>;
+export type TAdditionalPromptSchema = z.infer<typeof additionalPromptSchema>;

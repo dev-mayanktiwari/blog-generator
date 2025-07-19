@@ -14,6 +14,7 @@ import {
 import dbServices from "../services/dbServices";
 import quicker from "../utils/quicker";
 import { AppConfig } from "../config";
+import { AuthService } from "@workspace/auth";
 
 export default {
   register: asyncErrorHandler(
@@ -139,7 +140,9 @@ export default {
 
         let token;
         try {
-          token = await quicker.generateJWTToken(tokenPayload);
+          token = await AuthService.encode(tokenPayload, {
+            expiresIn: "30d",
+          });
         } catch (err) {
           console.error("Error generating JWT token:", err);
           return httpError(

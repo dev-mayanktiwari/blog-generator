@@ -8,7 +8,9 @@ type ConfigKeys =
   | "SAFE_COOKIE"
   | "GENKIT_API_KEY"
   | "GENKIT_FLOW_URL"
-  | "CORS_ORIGIN";
+  | "CORS_ORIGIN"
+  | "USER_RATE_LIMIT"
+  | "IP_RATE_LIMIT";
 
 const _config: Record<ConfigKeys, string | undefined> = {
   PORT: process.env.PORT,
@@ -18,6 +20,8 @@ const _config: Record<ConfigKeys, string | undefined> = {
   GENKIT_API_KEY: process.env.GENKIT_API_KEY,
   GENKIT_FLOW_URL: process.env.GENKIT_FLOW_URL,
   CORS_ORIGIN: process.env.CORS_ORIGIN || "http://localhost:3000",
+  USER_RATE_LIMIT: process.env.USER_RATE_LIMIT || "2",
+  IP_RATE_LIMIT: process.env.IP_RATE_LIMIT || "4",
 };
 
 export const AppConfig = {

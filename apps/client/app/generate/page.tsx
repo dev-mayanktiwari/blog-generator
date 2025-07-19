@@ -10,7 +10,11 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/providers";
 import { generateContentService } from "@/lib/apiClient";
-import { TSummarizeYoutubeVideoSchema } from "@workspace/types";
+import {
+  TSummarizeYoutubeVideoSchema,
+  TSummaryLengthSchema,
+  TSummaryToneSchema,
+} from "@workspace/types";
 
 interface GeneratedPost {
   id?: string;
@@ -23,14 +27,6 @@ interface GeneratedPost {
   status?: string;
 }
 
-type LengthType = "short" | "medium" | "long";
-type ToneType =
-  | "formal"
-  | "informal"
-  | "neutral"
-  | "professional"
-  | "conversational";
-
 const GenerateContent = () => {
   const [loading, setLoading] = useState(false);
   const [generatedPost, setGeneratedPost] = useState<GeneratedPost | null>(
@@ -42,17 +38,13 @@ const GenerateContent = () => {
   const { user } = useAuth(); // No need for authLoading here since ProtectedRoute handles it
   const router = useRouter();
 
-  const handleGenerate = async (formData: {
-    videoUrl: string;
-    length: LengthType;
-    tone: ToneType;
-  }) => {
+  const handleGenerate = async (formData: TSummarizeYoutubeVideoSchema) => {
     // Clear previous states
     setError(null);
     setGeneratedPost(null);
 
     // Validation
-    if (!formData.videoUrl?.trim() || !formData.length || !formData.tone) {
+    if (!formData.videoURL?.trim() || !formData.length || !formData.tone) {
       const errorMsg = "Please fill in all required fields";
       setError(errorMsg);
       toast.error("Validation Error", {
@@ -78,9 +70,12 @@ const GenerateContent = () => {
       console.log("Starting generation with payload:", formData);
 
       const payload: TSummarizeYoutubeVideoSchema = {
-        videoURL: formData.videoUrl,
+        videoURL: formData.videoURL.trim(),
         length: formData.length as any,
         tone: formData.tone as any,
+        contentType: formData.contentType,
+        additionalPrompt: formData.additionalPrompt?.trim(),
+        generateImage: formData.generateImage,
       };
 
       const response = await generateContentService.generateBlog(payload);
@@ -101,10 +96,12 @@ const GenerateContent = () => {
           title: response.data.title,
           // @ts-ignore
           content: response.data.content,
-          videoUrl: formData.videoUrl,
+          videoUrl: formData.videoURL,
           createdAt: new Date().toISOString(),
           length: formData.length,
           tone: formData.tone,
+          // @ts-ignore
+          imageUrl: response.data.imageUrl || null,
         };
 
         setGeneratedPost(newPost);
