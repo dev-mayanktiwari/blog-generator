@@ -13,6 +13,7 @@ export const authMiddleware = (
 
     if (!API_KEY || API_KEY !== AppConfig.get("GENKIT_API_KEY")) {
       res.status(401).json({ error: "Unauthorized" });
+      return;
     }
 
     // const request = req as AuthenticatedGenkitRequest;
@@ -26,6 +27,7 @@ export const authMiddleware = (
       },
     });
     res.status(500).json({ error: "Internal Server Error" });
+    return;
   }
 };
 
